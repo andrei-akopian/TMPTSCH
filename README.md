@@ -1,7 +1,7 @@
 # TMPTSCH
 Stands for **Takahashi Method Presentation Tool Sent Clone HTML**
 
-As the name suggests this is a presentation making tool based on the [Takahashi method](https://en.wikipedia.org/wiki/Takahashi_method) and inspired by the [sent](https://tools.suckless.org/sent/) (from [suckless.org](https://suckless.org/)) and [Big](https://github.com/tmcw/big). 
+As the name suggests this is a presentation making tool based on the [Takahashi method](https://en.wikipedia.org/wiki/Takahashi_method) and inspired by the [sent](https://tools.suckless.org/sent/) (from [suckless.org](https://suckless.org/)), [Weenote](https://github.com/jed/weenote), and [Big](https://github.com/tmcw/big), while also maintaining some compatibility with them. 
 
 But contradictory to the principles of the method this Clone is bloated with functionality while remaning a single html file so you can easily save and use it offline.
 
@@ -42,8 +42,12 @@ Feature coverage and compatibility with other tools.
 - [ ] Slides with exuberant amount of lines or characters produce rendering glitches intentionally to prevent you from holding bad presentations.
 
 [Big](https://github.com/tmcw/big) features:
-- [ ] print all presentation comment into the console
+- [ ] print all presentation comments into the console
 - [ ] controls
 
 [Weenote](https://github.com/jed/weenote)
 - [ ] campatibility
+
+## Credit
+
+fit() function is a modified version of the fit function from `weenote.js` from [Weenote](https://github.com/jed/weenote).

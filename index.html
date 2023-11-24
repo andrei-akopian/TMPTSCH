@@ -1,0 +1,120 @@
+<!DOCTYPE html><html>
+    <head>
+        <title>Takahashi Method Presentation</title>
+        <div id="menubar" class="menubar">
+            <div class="file-select">
+                <input type="file" id="file-input" accept=".md, .txt">
+                <button onclick="changeSlide(-1)">Previous</button>
+                <button onclick="changeSlide(1)">Next</button>
+            </div>
+        </div>
+        <script>
+            let slide_i = 0;
+            let slide_total = 0;
+            const header_element = document.getElementById("menubar");
+            let presentation;
+            document.getElementById("file-input").addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                presentation = document.getElementById("presentation");
+                if (file) {
+                    const reader = new FileReader();
+                    reader.readAsText(file);
+                    reader.onload = (e) => {
+                        const fileContent = e.target.result;
+                        for (var section of fileContent.split("\n\n")){
+                            addSlide(section);
+                        }
+                        document.getElementById("s0").style.display = "block";
+                    };
+                }
+            });
+            function hideHeader(){
+                if (header_element.style.display == "none"){
+                    header_element.style.display = "block";
+                    presentation.style.height = "90vh";
+                } else {
+                    header_element.style.display = "none";
+                    presentation.style.height = "100vh";
+                }
+            }
+            function addSlide(text){
+                let node = document.createElement("div");
+                node.className = "slide";
+                node.id = "s"+slide_total;
+                slide_total+=1;
+                if (text[0]=="@"){
+                    text=text.trim("").slice(1);
+                    node.innerHTML = `<img src=\"${text}\" alt=\"${text}\" class="image">`;
+                    document.getElementById("presentation").appendChild(node);
+                    node.style.display = "inline";
+                    node.style.top     = (innerHeight - node.offsetHeight) / 2 + "px";
+                    node.style.left    = (innerWidth - node.offsetWidth) / 2 + "px";
+                    node.style.display = "none";
+                } else {
+                    node.innerHTML = htmlEncoding(text);
+                    document.getElementById("presentation").appendChild(node);
+                    fit(node);
+                }
+            }
+            function htmlEncoding(string){
+                return string.replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n","<br>");
+            }
+            function changeSlide(n){
+                document.getElementById("s"+slide_i).style.display = "none";
+                slide_i = Math.max(Math.min(slide_total-1,slide_i+n),0);
+                document.getElementById("s"+slide_i).style.display = "block";
+            }
+            function fit(slide) {
+                var style = slide.style
+                var i = 1000
+                
+                style.display  = "inline";
+                style.fontSize = i + "px";
+
+                style.fontSize = Math.floor(Math.min(i/slide.offsetWidth*innerWidth,i/slide.offsetHeight*innerHeight))+"px";
+
+                style.top     = (innerHeight - slide.offsetHeight) / 2 + "px";
+                style.left    = (innerWidth - slide.offsetWidth) / 2 + "px";
+                style.display = "none";
+            }
+        </script>
+        <style>
+            .image {
+                max-height: 100vw;
+                max-width: 100vh;
+                height: auto;
+                width: auto;
+            }
+            .menubar {
+                margin-top: 0px;
+                background-color: #1919b7;
+                color: #BBBBBB;
+                height: 10vh;
+            }
+            .file-select {
+                margin-top: 10px;
+                margin-left: 10px;
+                position: absolute;
+            }
+            .presentation {
+                height: 90vh;
+                position: relative;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                background: #000000;
+                color: #FFFFFF;
+            }
+            .slide {
+                text-align: left;
+                white-space: nowrap;
+                position: absolute;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="presentation" id="presentation" onclick = "hideHeader()">
+        </div>
+    </body>
+</html>
