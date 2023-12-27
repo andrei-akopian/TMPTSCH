@@ -13,9 +13,11 @@
             let slide_total = 0;
             const header_element = document.getElementById("menubar");
             let presentation;
+            onload = () => {
+                presentation = document.getElementById("presentation");
+            };
             document.getElementById("file-input").addEventListener("change", (e) => {
                 const file = e.target.files[0];
-                presentation = document.getElementById("presentation");
                 if (file) {
                     const reader = new FileReader();
                     reader.readAsText(file);
@@ -42,11 +44,12 @@
                 node.className = "slide";
                 node.id = "s"+slide_total;
                 slide_total+=1;
+                // if image
                 if (text[0]=="@"){
                     text=text.trim("").slice(1);
                     node.innerHTML = `<img src=\"${text}\" alt=\"${text}\" class="image">`;
                     document.getElementById("presentation").appendChild(node);
-                    node.style.display = "inline";
+                    node.style.display = "block";
                     node.style.top     = (innerHeight - node.offsetHeight) / 2 + "px";
                     node.style.left    = (innerWidth - node.offsetWidth) / 2 + "px";
                     node.style.display = "none";
@@ -77,6 +80,13 @@
                 style.left    = (innerWidth - slide.offsetWidth) / 2 + "px";
                 style.display = "none";
             }
+            document.body.addEventListener("keydown", function (event) {
+                if (event.keyCode == 37){
+                    changeSlide(-1);
+                } else if (event.keyCode == 39) {
+                    changeSlide(1);
+                }
+            });
         </script>
         <style>
             .image {
