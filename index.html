@@ -2,11 +2,11 @@
     <head>
         <title>Takahashi Method Presentation</title>
         <div id="menubar" class="menubar">
-            <div class="file-select">
-                <input type="file" id="file-input" accept=".md, .txt">
-                <button onclick="changeSlide(-1)">Previous</button>
-                <button onclick="changeSlide(1)">Next</button>
-            </div>
+            <input type="file" id="file-input" class="file-input" accept=".md, .txt">
+            Slides:
+            <button onclick="changeSlide(-1)">Previous</button>
+            <button onclick="changeSlide(1)">Next</button>
+            &nbsp;&nbsp;More information: <a href="https://andrei-akopian.github.io/TakahashiSentHtml/"><strong>Source Code</strong></a>
         </div>
         <script>
             let slide_i = 0;
@@ -23,13 +23,16 @@
                     reader.readAsText(file);
                     reader.onload = (e) => {
                         const fileContent = e.target.result;
-                        for (var section of fileContent.split("\n\n")){
-                            addSlide(section);
-                        }
-                        document.getElementById("s0").style.display = "block";
+                        generateSlides(fileContent);
                     };
                 }
             });
+            function generateSlides(text){  
+                for (var section of text.split("\n\n")){
+                    addSlide(section);
+                }
+                document.getElementById("s0").style.display = "block";
+            }
             function hideHeader(){
                 if (header_element.style.display == "none"){
                     header_element.style.display = "block";
@@ -49,10 +52,7 @@
                     text=text.trim("").slice(1);
                     node.innerHTML = `<img src=\"${text}\" alt=\"${text}\" class="image">`;
                     document.getElementById("presentation").appendChild(node);
-                    node.style.display = "block";
-                    node.style.top     = (innerHeight - node.offsetHeight) / 2 + "px";
-                    node.style.left    = (innerWidth - node.offsetWidth) / 2 + "px";
-                    node.style.display = "none";
+                    node.style.display='none';
                 } else {
                     node.innerHTML = htmlEncoding(text);
                     document.getElementById("presentation").appendChild(node);
@@ -76,8 +76,6 @@
 
                 style.fontSize = Math.floor(Math.min(i/slide.offsetWidth*innerWidth,i/slide.offsetHeight*innerHeight))+"px";
 
-                style.top     = (innerHeight - slide.offsetHeight) / 2 + "px";
-                style.left    = (innerWidth - slide.offsetWidth) / 2 + "px";
                 style.display = "none";
             }
             document.body.addEventListener("keydown", function (event) {
@@ -101,14 +99,17 @@
                 color: #BBBBBB;
                 height: 10vh;
             }
-            .file-select {
-                margin-top: 10px;
-                margin-left: 10px;
+            .file-input {
+                width: 200px;
+            }
+            .text-input {
+                height: 100px;
                 position: absolute;
+                right: 0px;
             }
             .presentation {
-                height: 90vh;
-                position: relative;
+                height: 100vh;
+                display: grid;
             }
             body {
                 margin: 0;
@@ -119,7 +120,10 @@
             .slide {
                 text-align: left;
                 white-space: nowrap;
-                position: absolute;
+                place-self: center;
+            }
+            a {
+                color: lightgreen;
             }
         </style>
     </head>
