@@ -46,6 +46,7 @@ Custom features:
 - [X] single html
 - [ ] minimize JS and html for space
 - [X] included text editor
+  - add new slides for text editor
 - [~] easy saving
 - [ ] loading multiple files
 - [ ] sideloading images

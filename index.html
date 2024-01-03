@@ -2,23 +2,29 @@
     <head>
         <title>Takahashi Method Presentation</title>
         <div id="menubar">
-            <input type="file" id="file-input" class="file-input" accept=".md, .txt">
-            Slides (or use arrow keys):
-            <button onclick="changeSlide(-1)">Previous</button>
-            <button onclick="changeSlide(1)">Next</button>
-            <button onclick="document.body.classList.toggle('dark-theme')">Dark/Light Mode</button>
+            <div id="controls">
+                <input type="file" id="file-input" class="file-input" accept=".md, .txt">
+                Slides (or use arrow keys):
+                <button onclick="changeSlide(-1)">Previous</button>
+                <button onclick="changeSlide(1)">Next</button>
+                <button onclick="document.body.classList.toggle('dark-theme')">Dark/Light Mode</button>
+                <button onclick="addNewSlide(`Slide ${slide_total+1}`)">Add Empty Slide</button>
+                <div id="slide-count-display">No Slides Yet</div>
+            </div>
+            <div id="slide-editor">
+                <textarea type="text" id="slide-content-editor"></textarea>
+                <button id="confirm-edit" onclick="editSlideContent()">Enter</button>
+            </div>
             <div id="github-link">
                 <a target="_blank" href="https://github.com/andrei-akopian/TakahashiSentHtml">
-                <svg width="90" height="90%" viewBox="0 0 100 100">
+                Source Code
+                <svg width="90" height="70%" viewBox="10 10 90 90">
                     <circle cx="50" cy="50" r="30" fill="black"/>
                     <polygon points="20,50 20,15 50,40" fill="black"/>
                     <polygon points="80,50 80,15 50,40" fill="black"/>
                     <polyline points="40,40 30,50 40,60  60,40 70,50 60,60" stroke="white" stroke-width="2px">
                 </svg>
                 </a>
-            </div>
-            <div>
-                <textarea type="text" id="slide-editor"></textarea>
             </div>
         </div>
         <script>
@@ -27,16 +33,12 @@
             const header_element = document.getElementById("menubar");
             let presentation;
             let slide_editor;
+            let slide_count_display;
             let slide_contents = []; //TODO: switch to storing the content in a hidden slide. 
             onload = () => {
                 presentation = document.getElementById("presentation");
-                slide_editor = document.getElementById("slide-editor");
-                slide_editor.addEventListener("change", function(event){
-                    slide_contents[slide_i]=slide_editor.value;
-                    let slide = document.getElementById("s"+slide_i);
-                    generateSlideContents(slide, slide_contents[slide_i]);
-                    slide.style.display = "block";
-                });
+                slide_editor = document.getElementById("slide-content-editor");
+                slide_count_display = document.getElementById("slide-count-display");
             };
             document.getElementById("file-input").addEventListener("change", (e) => {
                 const file = e.target.files[0];
@@ -52,27 +54,35 @@
             function generateSlides(text){  
                 for (let content of text.split("\n\n")){
                     addSlide(content);
-                    slide_contents.push(content);
                 }
                 document.getElementById("s0").style.display = "block";
                 slide_editor.value = slide_contents[0];
             }
             function hideHeader(){
                 if (header_element.style.display == "none"){
-                    header_element.style.display = "block";
+                    header_element.style.display = "";
                     presentation.style.height = "90vh";
                 } else {
                     header_element.style.display = "none";
                     presentation.style.height = "100vh";
                 }
             }
+            function addNewSlide(text){
+                //TODO: appends slides to the presentation, make it insert
+                // creates new slide from the buttom, requires a bit of style.display = block
+                addSlide(text);
+                changeSlide(999); //Goto new slide
+            }
             function addSlide(text){
+                slide_contents.push(text);
                 let node = document.createElement("div");
                 node.className = "slide";
                 node.id = "s"+slide_total;
                 slide_total+=1;
                 document.getElementById("presentation").appendChild(node);
                 generateSlideContents(node,text);
+                //refresh counters etc.
+                changeSlide(0);
             }
             function generateSlideContents(node,text){
                 if (text[0]=="@"){
@@ -91,6 +101,7 @@
                 document.getElementById("s"+slide_i).style.display = "none";
                 slide_i = Math.max(Math.min(slide_total-1,slide_i+n),0);
                 document.getElementById("s"+slide_i).style.display = "block";
+                slide_count_display.innerText = `Slide: ${slide_i+1} of ${slide_total}`;
                 slide_editor.value = slide_contents[slide_i];
             }
             function fit(slide) {
@@ -103,6 +114,12 @@
                 style.fontSize = Math.floor(Math.min(i/slide.offsetWidth*innerWidth,i/slide.offsetHeight*innerHeight))+"px";
 
                 style.display = "none";
+            }
+            function editSlideContent(){
+                slide_contents[slide_i]=slide_editor.value;
+                let slide = document.getElementById("s"+slide_i);
+                generateSlideContents(slide, slide_contents[slide_i]);
+                slide.style.display = "block";
             }
             document.body.addEventListener("keydown", function (event) {
                 if (event.keyCode == 37){
@@ -123,22 +140,35 @@
                 margin-top: 0px;
                 background-color: #1919b7;
                 color: #BBBBBB;
-                height: 10vh;
-                position: relative;
-                padding: 10px;
+                height: 15vh;
+                width: 100%;
+                display: grid;
+                grid-template-columns: 50% 40% 10%;
             }
-            #github-link {
-                position: absolute;
+            #controls {
+                float: left;
                 height: 90%;
-                width: auto;
-                right: 10px;
-                top: 10%;
             }
             #slide-editor {
-                height: 50px;
-                position: absolute;
-                right: 10%;
-                top: 10px;
+                background-color: #101080;
+                height: 90%;
+                float: right;
+            }
+            #slide-content-editor {
+                width: 90%;
+                height: 100%;
+                outline: none;
+                border: none;
+                padding: 0;
+            }
+            #confirm-edit{
+                float: right;
+                height: 100%;
+                width: 10%; 
+            }
+            #github-link {
+                height: 90%;
+                padding-left: 15%;
             }
             .file-input {
                 width: 200px;
