@@ -4,27 +4,34 @@
         <div id="menubar">
             <div id="presentation-editor">
                 <input type="file" id="file-input" class="file-input" accept=".md, .txt">
-                <input type="checkbox" id="parse-comments">Parse Comments?
-                <button onclick="addNewSlide(`Slide ${slide_total+1}`)">Add Empty Slide</button>
-                <div id="slide-count-display">No Slides Yet</div>
+                <input type="checkbox" id="parse-comments-checkbox">Parse Comments?
+                <button onclick="addNewSlide(`Slide ${slide_total+1}`)">Append Empty Slide</button>
             </div>
             <div id="display-settings">
                 <div id="display-settings-title">Display Settings</div>
-                Slides (or use arrow keys):
-                <button onclick="changeSlide(-1)">Previous</button>
-                <button onclick="changeSlide(1)">Next</button>
+                <div id="navigation-controls">
+                    Navigate (or use arrow keys):
+                    <button onclick="changeSlide(-1)">&#8592;</button>
+                    <button onclick="changeSlide(1)">&#8594;</button>
+                </div>
+                <div id="shortcuts-text">
+                    Shortcuts: <br>
+                    [<hl>H</hl>]ide or Click on screen to hide header <br>
+                    [<hl>E</hl>]dit slide
+                </div>
                 <button id="theme-switch" onclick="changeTheme()" style="--active-theme-color:yellow;--inactive-theme-color:black;">
                     <svg width="40" height="40" viewBox="0 0 100 100">
                         <circle cx="60" cy="50" r="30" id="theme-circle-inactive" fill="var(--inactive-theme-color)"/>
                         <circle cx="40" cy="50" r="30" id="theme-circle-active" fill="var(--active-theme-color)"/>
                     </svg>
                 </button>
+                <div id="slide-count-display">No Slides Yet</div>
             </div>
             <div id="information-section">
                 <div id="github-link">
                     <a target="_blank" href="https://github.com/andrei-akopian/TakahashiSentHtml">
-                    Source Code
-                    <svg width="90" height="90" viewBox="10 10 90 90">
+                    <div>Source Code</div>
+                    <svg width="50" height="50" viewBox="10 10 80 80">
                         <circle cx="50" cy="50" r="30" fill="black"/>
                         <polygon points="20,50 20,15 50,40" fill="black"/>
                         <polygon points="80,50 80,15 50,40" fill="black"/>
@@ -38,6 +45,7 @@
             let slide_i = 0;
             let slide_total = 0;
             const header_element = document.getElementById("menubar");
+            const parse_comments_checkbox = document.getElementById("parse-comments-checkbox");
             let editor_sidebar;
             let slide_content_editor;
             let presentation;
@@ -48,6 +56,12 @@
                     hideHeader();
                 });
                 slide_total = presentation.childElementCount;
+                if (slide_total == 0){
+                    let placeholder = document.createElement("div");
+                    placeholder.id = "presentation-placeholder";
+                    placeholder.innerText = "No Slides Yet";
+                    presentation.appendChild(placeholder);
+                }
                 slide_count_display = document.getElementById("slide-count-display");
                 editor_sidebar = document.getElementById("editor-sidebar");
                 slide_content_editor = document.getElementById("slide-content-editor");
@@ -74,11 +88,17 @@
             function hideHeader(){
                 if (header_element.style.display == "none"){
                     header_element.style.display = "";
+                } else {
+                    header_element.style.display = "none";
+                    editor_sidebar.style.display = "none";
+                }
+            }
+            function hideEditor(){
+                if (editor_sidebar.style.display == "none"){
                     if (slide_total > 0){
                         editor_sidebar.style.display = "block";
                     }
                 } else {
-                    header_element.style.display = "none";
                     editor_sidebar.style.display = "none";
                 }
             }
@@ -86,7 +106,7 @@
                 //TODO: appends slides to the presentation, make it insert
                 // creates new slide from the buttom, requires a bit of style.display = block
                 addSlide(text);
-                changeSlide(999); //Goto new slide
+                changeSlide(slide_total-1); //Goto new slide
                 editor_sidebar.style.display = "block";
             }
             function addSlide(text){
@@ -94,8 +114,12 @@
                 node.dataset.slide_content = text;
                 node.className = "slide";
                 node.id = "s"+slide_total;
+                if (slide_total == 0){ //remove placeholder message
+                    document.getElementById("presentation-placeholder").remove();
+                    console.log("removed presentation placeholder");
+                }
                 slide_total+=1;
-                document.getElementById("presentation").appendChild(node);
+                presentation.appendChild(node);
                 generateSlideContents(node,text);
                 //refresh counters etc.
                 changeSlide(0);
@@ -103,7 +127,7 @@
             function generateSlideContents(node,text){
                 if (text[0]=="@"){
                     text=text.trim("").slice(1);
-                    // FIXME: there are problems with image resizing
+                    // FIXME: there are problems with image upscaling
                     node.innerHTML = `<img src=\"${text}\" alt=\"${text}\" class="image">`;
                     node.style.display='none';
                 } else {
@@ -144,6 +168,10 @@
                     changeSlide(-1);
                 } else if (event.keyCode == 39) {
                     changeSlide(1);
+                } else if (event.keyCode ==72) {
+                    hideHeader();
+                } else if (event.keyCode == 69) {
+                    hideEditor();
                 }
             });
             function changeTheme(){
@@ -176,6 +204,9 @@
                 display: grid;
                 grid-template-columns: 30% 50% 20%;
             }
+            .file-input {
+                width: 200px;
+            }
             #display-settings {
                 height: 120%;
                 background-color: #cc7606;
@@ -183,11 +214,18 @@
                 border-color: #9c5a05;
                 border-style: solid;
                 position: relative;
+                color: #000000;
             }
             #display-settings-title{
                 width 100%;
                 color: #2006cc;
                 text-align: center;
+            }
+            hl { /* custom highlight tag for shortcut letters*/
+                color: #2006cc;
+            }
+            #shortcuts-text {
+                padding-left: 5px;
             }
             #theme-switch {
                 position: absolute;
@@ -202,6 +240,11 @@
             }
             #theme-switch:hover #theme-circle-inactive {
                 fill: var(--active-theme-color);
+            }
+            #navigation-controls {
+                position: absolute;
+                bottom: 5px;
+                right: 5px;
             }
             #presentation-editor {
                 float: left;
@@ -219,17 +262,23 @@
             }
             #confirm-edit{
                 height: 5%;
-                width: 90%;
-                margin-left: 5%;
+                width: 80%;
                 margin-top: 5%;
             }
-            #github-link {
-                padding-top: 10px;
-                padding-left: 15%;
-                height: 90%;
+            #close-editor-button {
+                height: 5%;
+                margin-left: 4%;
+                margin-top: 5%;
+                width: 10%;
             }
             #information-section {
-                grid-column: 3;
+                position: relative;
+            }
+            #github-link {
+                position: absolute;
+                right: 10px;
+                height: 100%;
+                text-align: center;
             }
             #editor-sidebar {
                 background-color: lightblue;
@@ -239,9 +288,6 @@
                 right: 0;
                 top: 0;
                 height: 100%;
-            }
-            .file-input {
-                width: 200px;
             }
             .text-input {
                 height: 100px;
@@ -264,6 +310,12 @@
                 white-space: nowrap;
                 place-self: center;
             }
+            #presentation-placeholder {
+                color: #C0C0C0;
+                place-self: center;
+                text-align: center;
+                font-size: 20vh;
+            }
             a {
                 color: lightgreen;
             }
@@ -276,10 +328,12 @@
     <body>
         <div id="main-display-area">
             <div id="editor-sidebar">
+                <button id="close-editor-button" onclick="hideEditor()">&#8667;</button>
                 <button id="confirm-edit" onclick="editSlideContent()">Enter</button>
                 <textarea type="text" id="slide-content-editor"></textarea>
             </div>
-            <div id="presentation"></div>
+            <div id="presentation">
+            </div>
         </div>
     </body>
 </html>

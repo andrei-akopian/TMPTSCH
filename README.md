@@ -28,6 +28,12 @@ Standard `sent` syntax, if you know it, you are good to go. (check image syntax 
 
 If you don't, come back another day when I have better instructions ready.
 
+### Hotkeys
+
+`e` toggles the slide editor.
+
+`<-` and `->` arrows can be used to navigate slides.
+
 ### Images
 
 If your have saved the this tool as a `.html` file by hitting Ctrl + S as I described in the [Download](#download) section, you will be able to get image files using usual `@image.png`.
@@ -39,7 +45,7 @@ If you are using the [online version](https://andrei-akopian.github.io/Takahashi
 ### Features
 
 Features:
-- [~] dark/light modes
+- [x] dark/light modes
 
 Custom features:
 - [ ] all links open/autogenerate QR codes when in slide mode
@@ -47,7 +53,7 @@ Custom features:
 - [ ] minimize JS and html for space?
 - [X] included text editor
   -  [x] add new slides for text editor
-- [~] easy saving
+- [x] easy saving
 - [x] loading multiple files
 - [ ] sideloading images
   - [ ] base encode images for saving
@@ -65,9 +71,9 @@ Feature coverage and compatibility with other (similar) tools.
 - [x] Each paragraph represents one slide.
 - [x] Content is automatically scaled to fit the screen.
 - [ ] UTF-8 is supported.
-- [ ] Images can be displayed (no text on the same slide).
+- [x] Images can be displayed (no text on the same slide).
 - [ ] Just around ~~1000 lines of C~~ *a tone of javascript*
-- [ ] No different font styles (bold, italic, underline)
+- [ ] ~~No~~ different font styles (bold, italic, underline) *and fonts*
 - [ ] No fancy layout options (different font sizes, different colors, …)
 - [ ] No animations
 - [ ] No support for automatic layouting paragraphs
