@@ -14,7 +14,7 @@ If you already have a (text-only) presentation file for the original `sent`, you
 
 Why text only (no images)?
 
-Obviously the website can't read images that are localy on your computer. However, using `@https://en.m.wikipedia.org/wiki/File:Google_2015_logo.svg` (a link to an image) also works. Note that this feature isn't backward compatible with `sent`.
+Obviously the website can't read images that are localy on your computer. However, using `@https://upload.wikimedia.org/wikipedia/en/a/a9/Example.jpg` (a link to an image) also works. Note that this feature isn't backward compatible with `sent`.
 
 ### Download
 
@@ -44,14 +44,15 @@ Features:
 Custom features:
 - [ ] all links open/autogenerate QR codes when in slide mode
 - [X] single html
-- [ ] minimize JS and html for space
+- [ ] minimize JS and html for space?
 - [X] included text editor
-  - add new slides for text editor
+  -  [x] add new slides for text editor
 - [~] easy saving
-- [ ] loading multiple files
+- [x] loading multiple files
 - [ ] sideloading images
   - [ ] base encode images for saving
 - [ ] special markdown formatting
+- [ ] nice pdf printing formatting
 
 ### Comparison
 
@@ -60,12 +61,12 @@ Feature coverage and compatibility with other (similar) tools.
 *Feature modifications are in italic*
 
 [sent](https://tools.suckless.org/sent/) (from [suckless.org](https://suckless.org/)) *~~(Non-)~~* features:
-- [ ] A presentation is just a simple text file.
-- [ ] Each paragraph represents one slide.
-- [ ] Content is automatically scaled to fit the screen.
+- [x] A presentation is just a ~~simple text~~ *complicated html* file.
+- [x] Each paragraph represents one slide.
+- [x] Content is automatically scaled to fit the screen.
 - [ ] UTF-8 is supported.
 - [ ] Images can be displayed (no text on the same slide).
-- [ ] Just around 1000 lines of C
+- [ ] Just around ~~1000 lines of C~~ *a tone of javascript*
 - [ ] No different font styles (bold, italic, underline)
 - [ ] No fancy layout options (different font sizes, different colors, …)
 - [ ] No animations
@@ -85,4 +86,4 @@ Feature coverage and compatibility with other (similar) tools.
 
 ## Credit
 
-A lot of the code was written with Weenote and Big references.
+A lot of the code was written with Weenote and Big as references.

@@ -2,43 +2,50 @@
     <head>
         <title>Takahashi Method Presentation</title>
         <div id="menubar">
-            <div id="controls">
+            <div id="presentation-editor">
                 <input type="file" id="file-input" class="file-input" accept=".md, .txt">
+                <input type="checkbox" id="parse-comments">Parse Comments?
+                <button onclick="addNewSlide(`Slide ${slide_total+1}`)">Add Empty Slide</button>
+                <div id="slide-count-display">No Slides Yet</div>
+            </div>
+            <div id="display-settings">
+                <div id="display-settings-title">Display Settings</div>
                 Slides (or use arrow keys):
                 <button onclick="changeSlide(-1)">Previous</button>
                 <button onclick="changeSlide(1)">Next</button>
                 <button onclick="document.body.classList.toggle('dark-theme')">Dark/Light Mode</button>
-                <button onclick="addNewSlide(`Slide ${slide_total+1}`)">Add Empty Slide</button>
-                <div id="slide-count-display">No Slides Yet</div>
             </div>
-            <div id="slide-editor">
-                <textarea type="text" id="slide-content-editor"></textarea>
-                <button id="confirm-edit" onclick="editSlideContent()">Enter</button>
-            </div>
-            <div id="github-link">
-                <a target="_blank" href="https://github.com/andrei-akopian/TakahashiSentHtml">
-                Source Code
-                <svg width="90" height="70%" viewBox="10 10 90 90">
-                    <circle cx="50" cy="50" r="30" fill="black"/>
-                    <polygon points="20,50 20,15 50,40" fill="black"/>
-                    <polygon points="80,50 80,15 50,40" fill="black"/>
-                    <polyline points="40,40 30,50 40,60  60,40 70,50 60,60" stroke="white" stroke-width="2px">
-                </svg>
-                </a>
+            <div id="information-section">
+                <div id="github-link">
+                    <a target="_blank" href="https://github.com/andrei-akopian/TakahashiSentHtml">
+                    Source Code
+                    <svg width="90" height="90" viewBox="10 10 90 90">
+                        <circle cx="50" cy="50" r="30" fill="black"/>
+                        <polygon points="20,50 20,15 50,40" fill="black"/>
+                        <polygon points="80,50 80,15 50,40" fill="black"/>
+                        <polyline points="40,40 30,50 40,60  60,40 70,50 60,60" stroke="white" stroke-width="2px">
+                    </svg>
+                    </a>
+                </div>
             </div>
         </div>
         <script>
             let slide_i = 0;
             let slide_total = 0;
             const header_element = document.getElementById("menubar");
+            let editor_sidebar;
+            let slide_content_editor;
             let presentation;
-            let slide_editor;
             let slide_count_display;
-            let slide_contents = []; //TODO: switch to storing the content in a hidden slide. 
             onload = () => {
                 presentation = document.getElementById("presentation");
-                slide_editor = document.getElementById("slide-content-editor");
+                presentation.addEventListener('click', function(event) {
+                    hideHeader();
+                });
+                slide_total = presentation.childElementCount;
                 slide_count_display = document.getElementById("slide-count-display");
+                editor_sidebar = document.getElementById("editor-sidebar");
+                slide_content_editor = document.getElementById("slide-content-editor");
             };
             document.getElementById("file-input").addEventListener("change", (e) => {
                 const file = e.target.files[0];
@@ -50,21 +57,24 @@
                         generateSlides(fileContent);
                     };
                 }
+                document.getElementById("file-input").value = "";
             });
             function generateSlides(text){  
                 for (let content of text.split("\n\n")){
                     addSlide(content);
                 }
                 document.getElementById("s0").style.display = "block";
-                slide_editor.value = slide_contents[0];
+                slide_content_editor.value = document.getElementById("s0").dataset.slide_content;
             }
             function hideHeader(){
                 if (header_element.style.display == "none"){
                     header_element.style.display = "";
-                    presentation.style.height = "90vh";
+                    if (slide_total > 0){
+                        editor_sidebar.style.display = "block";
+                    }
                 } else {
                     header_element.style.display = "none";
-                    presentation.style.height = "100vh";
+                    editor_sidebar.style.display = "none";
                 }
             }
             function addNewSlide(text){
@@ -72,10 +82,11 @@
                 // creates new slide from the buttom, requires a bit of style.display = block
                 addSlide(text);
                 changeSlide(999); //Goto new slide
+                editor_sidebar.style.display = "block";
             }
             function addSlide(text){
-                slide_contents.push(text);
                 let node = document.createElement("div");
+                node.dataset.slide_content = text;
                 node.className = "slide";
                 node.id = "s"+slide_total;
                 slide_total+=1;
@@ -87,6 +98,7 @@
             function generateSlideContents(node,text){
                 if (text[0]=="@"){
                     text=text.trim("").slice(1);
+                    // FIXME: there are problems with image resizing
                     node.innerHTML = `<img src=\"${text}\" alt=\"${text}\" class="image">`;
                     node.style.display='none';
                 } else {
@@ -102,7 +114,7 @@
                 slide_i = Math.max(Math.min(slide_total-1,slide_i+n),0);
                 document.getElementById("s"+slide_i).style.display = "block";
                 slide_count_display.innerText = `Slide: ${slide_i+1} of ${slide_total}`;
-                slide_editor.value = slide_contents[slide_i];
+                slide_content_editor.value = document.getElementById("s"+slide_i).dataset.slide_content;
             }
             function fit(slide) {
                 var style = slide.style
@@ -116,9 +128,9 @@
                 style.display = "none";
             }
             function editSlideContent(){
-                slide_contents[slide_i]=slide_editor.value;
                 let slide = document.getElementById("s"+slide_i);
-                generateSlideContents(slide, slide_contents[slide_i]);
+                slide.dataset.slide_content=slide_content_editor.value;
+                generateSlideContents(slide, slide.dataset.slide_content);
                 slide.style.display = "block";
             }
             document.body.addEventListener("keydown", function (event) {
@@ -130,6 +142,10 @@
             });
         </script>
         <style>
+            #main-display-area {
+                position: relative;
+                display: grid;
+            }
             .image {
                 max-height: 100vw;
                 max-width: 100vh;
@@ -140,35 +156,59 @@
                 margin-top: 0px;
                 background-color: #1919b7;
                 color: #BBBBBB;
-                height: 15vh;
+                height: 15%;
                 width: 100%;
                 display: grid;
-                grid-template-columns: 50% 40% 10%;
+                grid-template-columns: 30% 50% 20%;
             }
-            #controls {
+            #display-settings {
+                height: 120%;
+                background-color: #cc7606;
+                border-width: 5px;
+                border-color: #9c5a05;
+                border-style: solid;
+            }
+            #display-settings-title{
+                width 100%;
+                color: #2006cc;
+                text-align: center;
+            }
+            #presentation-editor {
                 float: left;
                 height: 90%;
-            }
-            #slide-editor {
-                background-color: #101080;
-                height: 90%;
-                float: right;
+                padding: 10px;
             }
             #slide-content-editor {
                 width: 90%;
-                height: 100%;
+                height: 90%;
                 outline: none;
                 border: none;
                 padding: 0;
+                margin-top: 5%;
+                margin-left: 5%;
             }
             #confirm-edit{
-                float: right;
-                height: 100%;
-                width: 10%; 
+                height: 5%;
+                width: 90%;
+                margin-left: 5%;
+                margin-top: 5%;
             }
             #github-link {
-                height: 90%;
+                padding-top: 10px;
                 padding-left: 15%;
+                height: 90%;
+            }
+            #information-section {
+                grid-column: 3;
+            }
+            #editor-sidebar {
+                background-color: lightblue;
+                width: 300px;
+                display: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                height: 100%;
             }
             .file-input {
                 width: 200px;
@@ -178,15 +218,16 @@
                 position: absolute;
                 right: 0px;
             }
-            .presentation {
+            #presentation {
                 height: 100vh;
                 display: grid;
             }
             body {
                 margin: 0;
                 padding: 0;
-                background: #F;
-                color: #0;
+                background: #FFFFFF;
+                color: #000000;
+                font-family: Trebuchet MS;
             }
             .slide {
                 text-align: left;
@@ -203,7 +244,12 @@
         </style>
     </head>
     <body>
-        <div class="presentation" id="presentation" onclick = "hideHeader()">
+        <div id="main-display-area">
+            <div id="editor-sidebar">
+                <button id="confirm-edit" onclick="editSlideContent()">Enter</button>
+                <textarea type="text" id="slide-content-editor"></textarea>
+            </div>
+            <div id="presentation"></div>
         </div>
     </body>
 </html>
