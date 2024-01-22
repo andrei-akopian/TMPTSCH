@@ -13,7 +13,12 @@
                 Slides (or use arrow keys):
                 <button onclick="changeSlide(-1)">Previous</button>
                 <button onclick="changeSlide(1)">Next</button>
-                <button onclick="document.body.classList.toggle('dark-theme')">Dark/Light Mode</button>
+                <button id="theme-switch" onclick="changeTheme()" style="--active-theme-color:yellow;--inactive-theme-color:black;">
+                    <svg width="40" height="40" viewBox="0 0 100 100">
+                        <circle cx="60" cy="50" r="30" id="theme-circle-inactive" fill="var(--inactive-theme-color)"/>
+                        <circle cx="40" cy="50" r="30" id="theme-circle-active" fill="var(--active-theme-color)"/>
+                    </svg>
+                </button>
             </div>
             <div id="information-section">
                 <div id="github-link">
@@ -133,6 +138,7 @@
                 generateSlideContents(slide, slide.dataset.slide_content);
                 slide.style.display = "block";
             }
+            // Display Settings related functions
             document.body.addEventListener("keydown", function (event) {
                 if (event.keyCode == 37){
                     changeSlide(-1);
@@ -140,6 +146,15 @@
                     changeSlide(1);
                 }
             });
+            function changeTheme(){
+                // toggle dark mode
+                document.body.classList.toggle('dark-theme');
+                // swap colors on the toggle (aesthetic, no functionality)
+                let theme_button = document.getElementById("theme-switch");
+                let temp = theme_button.style.getPropertyValue("--active-theme-color");
+                theme_button.style.setProperty("--active-theme-color",theme_button.style.getPropertyValue("--inactive-theme-color"))
+                theme_button.style.setProperty("--inactive-theme-color",temp);
+            }
         </script>
         <style>
             #main-display-area {
@@ -167,11 +182,26 @@
                 border-width: 5px;
                 border-color: #9c5a05;
                 border-style: solid;
+                position: relative;
             }
             #display-settings-title{
                 width 100%;
                 color: #2006cc;
                 text-align: center;
+            }
+            #theme-switch {
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: #9c5a05;
+                border: none;
+                border-radius: 0px 0px 0px 20px;
+            }
+            #theme-switch:hover #theme-circle-active {
+                fill: var(--inactive-theme-color);
+            }
+            #theme-switch:hover #theme-circle-inactive {
+                fill: var(--active-theme-color);
             }
             #presentation-editor {
                 float: left;
@@ -203,7 +233,7 @@
             }
             #editor-sidebar {
                 background-color: lightblue;
-                width: 300px;
+                width: 20%;
                 display: none;
                 position: absolute;
                 right: 0;
