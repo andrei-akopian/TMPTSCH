@@ -32,6 +32,8 @@ If you don't, come back another day when I have better instructions ready.
 
 `e` toggles the slide editor.
 
+`h` toggles the header and the editor.
+
 `<-` and `->` arrows can be used to navigate slides.
 
 ### Images
@@ -39,6 +41,15 @@ If you don't, come back another day when I have better instructions ready.
 If your have saved the this tool as a `.html` file by hitting Ctrl + S as I described in the [Download](#download) section, you will be able to get image files using usual `@image.png`.
 
 If you are using the [online version](https://andrei-akopian.github.io/TakahashiSentHtml/), you won't be able to use local images, but you can instead link images through their url (`@https://example.com/image.png`). 
+
+### Presenter's Notes
+`//` will treat the whole line as presenter's notes. 
+
+The notes will be printed to the dev console of your browser (the printing behavior will be a bit wonky, but it does give you the slide number). (btw, it is possible to pop out the developer console into a separate window). 
+
+You should only have 1 comment line per slide, but if you have mutiple it will still work.
+
+If the Parse Comments **checkbox is checked** upon the addition or new slide content's are entered, the presenter's notes will be saved using an invisible `<notes>` tag and will appear in the console when going to a news slide.
 
 ## Roadmap/Features
 
