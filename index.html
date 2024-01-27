@@ -3,12 +3,19 @@
         <title>Takahashi Method Presentation</title>
         <div id="menubar">
             <div id="presentation-editor">
-                <input type="file" id="file-input" class="file-input" accept=".md, .txt">
-                <input type="checkbox" id="parse-comments-checkbox">Parse Comments?
-                <button onclick="addNewSlide(`Slide ${slide_total+1}`)">Append Empty Slide</button>
+                <div id="presentation-editor-title" class="menu-title">ADD SLIDES</div>
+                <div>
+                    <input type="file" id="file-input" class="file-input">
+                    <input type="checkbox" id="parse-comments-checkbox">Parse Presenter Notes?
+                    <button onclick="addNewSlide(`Slide ${slide_total+1}`)">Append Empty Slide</button>
+                </div>
+                <div>
+                    <div class="menu-title">EXPORT SLIDES</div>
+                    <button onclick="exportToTXT()">Export to .TXT</button>
+                </div>
             </div>
             <div id="display-settings">
-                <div id="display-settings-title">Display Settings</div>
+                <div id="display-settings-title" class="menu-title">Display Settings</div>
                 <div id="navigation-controls">
                     Navigate (or use arrow keys):
                     <button onclick="changeSlide(-1)">&#8592;</button>
@@ -17,7 +24,9 @@
                 <div id="shortcuts-text">
                     Shortcuts: <br>
                     [<hl>H</hl>]ide or Click on screen to hide header <br>
-                    [<hl>E</hl>]dit slide
+                    [<hl>E</hl>]dit slide <br>
+                    <button onclick="toggleFullscreen()" style="padding: 0">[<hl>F</hl>]ullscreen toggle </button><br>
+                    <button onclick="reloadSlides()" style="padding: 0">[<hl>R</hl>]egenerate Slides</button>
                 </div>
                 <button id="theme-switch" onclick="changeTheme()" style="--active-theme-color:yellow;--inactive-theme-color:black;">
                     <svg width="40" height="40" viewBox="0 0 100 100">
@@ -30,12 +39,14 @@
             <div id="information-section">
                 <div id="github-link">
                     <a target="_blank" href="https://github.com/andrei-akopian/TakahashiSentHtml">
-                    <div>Source Code</div>
+                    <div>Info/Code</div>
                     <svg width="50" height="50" viewBox="10 10 80 80">
                         <circle cx="50" cy="50" r="30" fill="black"/>
                         <polygon points="20,50 20,15 50,40" fill="black"/>
                         <polygon points="80,50 80,15 50,40" fill="black"/>
-                        <polyline points="40,40 30,50 40,60  60,40 70,50 60,60" stroke="white" stroke-width="2px">
+                        <polyline points="40,40 30,50 40,60  60,40 70,50 60,60" stroke="white" stroke-width="2px" class="code-icon"/>
+                        <line x1="50" y1="70" x2="50" y2="50" stroke="white" stroke-width="5px" stroke-linecap="round" class="info-icon"/>
+                        <circle cx="50" cy="40" r="5px" fill="white" class="info-icon" />
                     </svg>
                     </a>
                 </div>
@@ -78,6 +89,22 @@
                 }
                 document.getElementById("file-input").value = "";
             });
+            function exportToTXT(){
+                if (slide_total==0){
+                    return;
+                }
+                let content = "";
+                const link = document.createElement("a");
+                for (slide of presentation.children) {
+                    content += slide.dataset.slide_content + "\n\n";
+                }
+                content = content.trim("\n");
+                let file = new Blob([content], {type: 'text/plain'});
+                link.href = URL.createObjectURL(file);
+                link.download = "presentation.txt";
+                link.click();
+                URL.revokeObjectURL(link.href);
+            }
             function generateSlides(text){  
                 for (let content of text.split("\n\n")){
                     addSlide(content);
@@ -126,7 +153,6 @@
             function generateSlideContents(node,text){
                 if (text[0]=="@"){
                     text=text.trim("").slice(1);
-                    // FIXME: there are problems with image upscaling
                     node.innerHTML = `<img src=\"${text}\" alt=\"${text}\" class="image">`;
                     node.style.display='none';
                 } else {
@@ -179,6 +205,16 @@
                 generateSlideContents(slide, slide.dataset.slide_content);
                 slide.style.display = "block";
             }
+            function reloadSlides(){
+                if (slide_total==0){
+                    return;
+                }
+                let slide;
+                for (slide of presentation.children){
+                    generateSlideContents(slide, slide.dataset.slide_content);
+                }
+                document.getElementById("s"+slide_i).style.display = "block";
+            }
             // Display Settings related functions
             document.body.addEventListener("keydown", function (event) {
                 if (document.activeElement === slide_content_editor){
@@ -192,6 +228,10 @@
                     hideHeader();
                 } else if (event.keyCode == 69) {
                     hideEditor();
+                } else if (event.keyCode == 82) {
+                    reloadSlides();
+                } else if (event.keyCode == 70) {
+                    toggleFullscreen();
                 }
             });
             function changeTheme(){
@@ -202,7 +242,14 @@
                 let temp = theme_button.style.getPropertyValue("--active-theme-color");
                 theme_button.style.setProperty("--active-theme-color",theme_button.style.getPropertyValue("--inactive-theme-color"))
                 theme_button.style.setProperty("--inactive-theme-color",temp);
-            }
+            };
+            function toggleFullscreen() {
+                if (document.fullscreen) {
+                    document.exitFullscreen();
+                } else if (document.fullscreenEnabled){ //TODO add fullscreen unavailable error
+                    document.body.requestFullscreen();
+                }
+            };
         </script>
         <style>
             #main-display-area {
@@ -210,10 +257,11 @@
                 display: grid;
             }
             .image {
-                max-height: 100vw;
-                max-width: 100vh;
-                height: auto;
-                width: auto;
+                max-height: 100vh;
+                max-width: 100vw;
+                object-fit: contain;
+                height: 100vh;
+                width: 100vh;
             }
             #menubar {
                 margin-top: 0px;
@@ -235,11 +283,20 @@
                 border-style: solid;
                 position: relative;
                 color: #000000;
+                z-index: 1;
             }
             #display-settings-title{
-                width 100%;
                 color: #2006cc;
+            }
+            .menu-title {
+                width 100%;
                 text-align: center;
+            }
+            #presentation-editor-title {
+                color: #CB7606;
+            }
+            #slide-count-display {
+                position: relative;
             }
             hl { /* custom highlight tag for shortcut letters*/
                 color: #2006cc;
@@ -269,7 +326,8 @@
             #presentation-editor {
                 float: left;
                 height: 90%;
-                padding: 10px;
+                padding-left: 10px;
+                padding-right: 10px;
             }
             #slide-content-editor {
                 width: 90%;
@@ -300,6 +358,15 @@
                 height: 100%;
                 text-align: center;
             }
+            .info-icon {
+                display: none;
+            }
+            #github-link:hover .info-icon{
+                display: block;
+            }
+            #github-link:hover .code-icon{
+                display: none;
+            }
             #editor-sidebar {
                 background-color: lightblue;
                 width: 20%;
@@ -317,6 +384,7 @@
             #presentation {
                 height: 100vh;
                 display: grid;
+                overflow: hidden;
             }
             body {
                 margin: 0;
@@ -324,6 +392,10 @@
                 background: #FFFFFF;
                 color: #000000;
                 font-family: Trebuchet MS;
+                --placeholder-color: #C0C0C0;
+            }
+            body::backdrop, body:fullscreen {
+                background: #FFFFFF;
             }
             .slide {
                 text-align: left;
@@ -334,7 +406,7 @@
                 display: none;
             }
             #presentation-placeholder {
-                color: #C0C0C0;
+                color: var(--placeholder-color);
                 place-self: center;
                 text-align: center;
                 font-size: 20vh;
@@ -343,8 +415,9 @@
                 color: lightgreen;
             }
             .dark-theme {
-                background: #000000;
+                background-color: #000000;
                 color: #FFFFFF;
+                --placeholder-color: #303030;
             }
         </style>
     </head>
