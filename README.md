@@ -5,6 +5,10 @@ As the name suggests this is a presentation making tool based on the [Takahashi 
 
 But contradictory to the principles of the method this Clone is bloated with functionality while remaning a single html file so you can easily save and use it offline.
 
+### Purpose
+
+The purpose of this application is to display presentations generated from TXT files (other file formats might happen to work but are not supported). The editing features are not intended be used for making presentations, only quick edits for typos.
+
 # [Try](https://andrei-akopian.github.io/TakahashiSentHtml/)
 
 ## Install/Download
@@ -18,7 +22,7 @@ Obviously the website can't read images that are localy on your computer. Howeve
 
 ### Download
 
-If you want it all to be local with no contact to the internet, you can just hit Ctrl + S and save the website as html. Because of the way I made it, it will remain as a single file (and the slides you already created will be saved as well).
+If you want it all to be local with no contact to the internet, you can just hit `Ctrl + S` (or  `Cmd + S` on Mac) and save the website as html. Because of the way I made it, it will remain as a single file (and the slides you already created will be saved as well).
 
 - [ ] Features described above are not yet polished.
 
@@ -34,11 +38,15 @@ If you don't, come back another day when I have better instructions ready.
 
 `h` toggles the header and the editor.
 
-`<-` and `->` arrows can be used to navigate slides.
+`r` regenerates the slides (use after resizing the window or changing formatting options)
+
+`f` toggles fullscreen
+
+Arrow keys can be used to navigate slides.
 
 ### Images
 
-If your have saved the this tool as a `.html` file by hitting Ctrl + S as I described in the [Download](#download) section, you will be able to get image files using usual `@image.png`.
+You can save this tool/presentation as a `.html` file by hitting Ctrl + S as I described in the [Download](#download) section, you will be able to get image files using usual `@image.png`.
 
 If you are using the [online version](https://andrei-akopian.github.io/TakahashiSentHtml/), you won't be able to use local images, but you can instead link images through their url (`@https://example.com/image.png`). 
 
@@ -51,25 +59,38 @@ You should only have 1 comment line per slide, but if you have mutiple it will s
 
 If the Parse Comments **checkbox is checked** upon the addition or new slide content's are entered, the presenter's notes will be saved using an invisible `<notes>` tag and will appear in the console when going to a news slide.
 
+### QR Codes and Hyperlinks
+
+If you enter links in the markdown format `[Example](https://example.com/)` the link will be converted into a `<a>` html tag. By default the QR Code feature will be disabled, and the links will open in a new tab.
+
+QR Codes features is implemented using [qrcode.js](https://davidshimjs.github.io/qrcodejs/). You can choose where you wish to load the library from using the dropdown (Local, or CDN). If you are using the github pages site, selecting the local option will work as a `qrcode.js` script is in this repository, but if you have downloaded this app you might want to use the CDN (by Cloudflare) option, and if it gets cached in your browser it should work even offline.
+
+Open a QR code by clicking on the hyperlink text, and close it by clicking on the QR code itself.
+
+- [ ] QR Code scaling will be implemented in the future
+- [ ] QR Codes are a bit wonky right now, so menage your expectations.
+
 ## Roadmap/Features
 
 ### Features
 
 Features:
-- [x] dark/light modes
+- dark/light modes
 
 Custom features:
 - [ ] all links open/autogenerate QR codes when in slide mode
-- [X] single html
+- single html
 - [ ] minimize JS and html for space?
-- [X] included text editor
-  -  [x] add new slides for text editor
-- [x] easy saving
-- [x] loading multiple files
+- included text editor
+  - add new slides for text editor
+- easy saving
+  - saving text file
+  - [ ] nice pdf printing formatting
+- loading multiple files
 - [ ] sideloading images
   - [ ] base encode images for saving
 - [ ] special markdown formatting
-- [ ] nice pdf printing formatting
+- [ ] make an additional tool that downloads all url linked images
 
 ### Comparison
 
@@ -78,23 +99,23 @@ Feature coverage and compatibility with other (similar) tools.
 *Feature modifications are in italic*
 
 [sent](https://tools.suckless.org/sent/) (from [suckless.org](https://suckless.org/)) *~~(Non-)~~* features:
-- [x] A presentation is just a ~~simple text~~ *complicated html* file.
-- [x] Each paragraph represents one slide.
-- [x] Content is automatically scaled to fit the screen.
+- A presentation is just a ~~simple text~~ *complicated html* file.
+- Each paragraph represents one slide.
+- Content is automatically scaled to fit the screen.
 - [ ] UTF-8 is supported.
-- [x] Images can be displayed (no text on the same slide).
-- [ ] Just around ~~1000 lines of C~~ *a tone of javascript*
+- Images can be displayed (no text on the same slide).
+- Just around ~~1000 lines of C~~ *a tone of javascript*
 - [ ] ~~No~~ different font styles (bold, italic, underline) *and fonts*
 - [ ] No fancy layout options (different font sizes, different colors, …)
 - [ ] No animations
 - [ ] No support for automatic layouting paragraphs
-- [ ] No export function. If you really need one, just use a shell script with xdotool and your favorite screenshot application.
+- No export function. If you really need one, just use a shell script with xdotool and your favorite screenshot application.
+  - Export back to a .txt file.
+  - [ ] pdf export
 - [ ] Slides with exuberant amount of lines or characters produce rendering glitches intentionally to prevent you from holding bad presentations.
 
-- [ ] make an additional tool that downloads all url linked images
-
 [Big](https://github.com/tmcw/big) features:
-- [ ] print all presentation comments into the console
+- print all presentation comments into the console
 - [ ] controls
 - [ ] jump menu
 
@@ -104,3 +125,5 @@ Feature coverage and compatibility with other (similar) tools.
 ## Credit
 
 A lot of the code was written with Weenote and Big as references.
+
+[qrcode.js](https://davidshimjs.github.io/qrcodejs/) for QR Code generation. (and Cloudflare CDN for loading the script form the web)

@@ -1,6 +1,7 @@
 <!DOCTYPE html><html>
     <head>
         <title>Takahashi Method Presentation</title>
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
         <div id="menubar">
             <div id="presentation-editor">
                 <div id="presentation-editor-title" class="menu-title">ADD SLIDES</div>
@@ -35,6 +36,14 @@
                     </svg>
                 </button>
                 <div id="slide-count-display">No Slides Yet</div>
+                <div style="position: absolute">
+                    QR Codes: 
+                    <select name="qrcode-select" id="qrcode-select">
+                        <option value="disabled">Disabled</option>
+                        <option value="CDN">Load via CDN</option>
+                        <option value="local">Load from Local</option>
+                    </select>
+                </div>
             </div>
             <div id="information-section">
                 <div id="github-link">
@@ -61,6 +70,16 @@
             let slide_content_editor;
             let presentation;
             let slide_count_display;
+            let popup_box;
+            let temp;
+            const QR_code = {
+                loaded: false,
+                QRCode: null,
+                options: {
+                    width: 512, //TODO figure out QR code scaling issues
+                    height: 512
+                }
+            };
             onload = () => {
                 presentation = document.getElementById("presentation");
                 presentation.addEventListener('click', function(event) {
@@ -76,6 +95,34 @@
                 slide_count_display = document.getElementById("slide-count-display");
                 editor_sidebar = document.getElementById("editor-sidebar");
                 slide_content_editor = document.getElementById("slide-content-editor");
+                popup_box = document.getElementById("popup-box");
+            };
+            window.onbeforeunload = () => {
+                return "Your progress will be lost. You can save the presentation using Ctrl/Cmd+S";
+            };
+            async function loadQRCodeLib(source){
+                if (QR_code.loaded){ //TODO: reconsider this the way this should be handeled
+                    return;
+                };
+                if (source=='CDN'){
+                    let response = await fetch("https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js", {
+                        integrity: "sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==",
+                        crossorigin: "anonymous",
+                        referrerpolicy: "no-referrer",
+                    });
+                    let code = await response.text();
+                    eval(code);
+                    QR_code.QRCode = QRCode;
+                } else if (source=="local") {
+                    let node = document.createElement("script");
+                    node.type='text/javascript';
+                    node.src = 'qrcode.js'; //TODO do smth to make qrcode.min.js also work
+                    node.onload = () => {
+                        QR_code.QRCode = QRCode;
+                        QR_code.loaded = true;
+                    };
+                    document.body.appendChild(node);
+                }
             };
             document.getElementById("file-input").addEventListener("change", (e) => {
                 const file = e.target.files[0];
@@ -88,6 +135,9 @@
                     };
                 }
                 document.getElementById("file-input").value = "";
+            });
+            document.getElementById("qrcode-select").addEventListener("change", (e)=>{
+                loadQRCodeLib(document.getElementById("qrcode-select").value);
             });
             function exportToTXT(){
                 if (slide_total==0){
@@ -129,6 +179,14 @@
                     editor_sidebar.style.display = "none";
                 }
             }
+            function showQRCode(event, element){
+                event.stopPropagation();
+                if (element.style.display == "block"){
+                    element.style.display = "";
+                } else {
+                    element.style.display = "block";
+                }
+            }
             function addNewSlide(text){
                 //TODO: appends slides to the presentation, make it insert
                 // creates new slide from the buttom, requires a bit of style.display = block
@@ -151,27 +209,71 @@
                 changeSlide(0);
             }
             function generateSlideContents(node,text){
-                if (text[0]=="@"){
+                node.innerHTML = "";
+                if (text[0]=="@"){ //TODO make it possible to add comments to image slides
                     text=text.trim("").slice(1);
-                    node.innerHTML = `<img src=\"${text}\" alt=\"${text}\" class="image">`;
+                    let image = document.createElement("img");
+                    image.src = text;
+                    image.alt = text;
+                    image.className = "image";
+                    node.appendChild(image);
                     node.style.display='none';
                 } else {
-                    node.innerHTML = htmlEncoding(text);
+                    let lines = text.split("\n");
+                    for (let line_i=0; line_i<lines.length; line_i++) {
+                        let line = lines[line_i];
+                        if (parse_comments_checkbox.checked && line.slice(0,2)=="//") {
+                            //TODO: there is probably a better code for comments
+                            let presenter_note = document.createElement("notes");
+                            presenter_note.innerContent = line.slice(2);
+                            node.appendChild(presenter_note);
+                        } else {
+                            // parse markdown links
+                            let i = line.indexOf("](");
+                            while (i>=0) { //TODO: doesn't handle all edgecases eg. "Title)[google.com]"
+                                let opening_braket = line.lastIndexOf("[",i);
+                                let link_title = line.substring(opening_braket+1,i);
+                                let closing_parenth = line.indexOf(")");
+                                let link_url = line.substring(i+2,closing_parenth);
+
+                                node.appendChild(document.createTextNode(htmlEncoding(line.substring(0,opening_braket))));
+                                node.appendChild(generateLinkTag(link_title, link_url));
+                                
+                                line = line.substring(closing_parenth+1);
+                                i = line.indexOf("](");
+                            }
+                            node.appendChild(document.createTextNode(htmlEncoding(line)));
+                            if (line_i<lines.length-1){
+                                node.appendChild(document.createElement("br"));
+                            }
+                        }
+                    }
                     fit(node);
                 }
             }
             function htmlEncoding(string){
-                let lines = string.split("\n");
-                let result = "";
-                for (line of lines) {
-                    if (parse_comments_checkbox.checked && line.slice(0,2)=="//") {
-                        //TODO: there is probably a better code for comments
-                        result += "<notes>"+line.slice(2)+"</notes>";
-                    } else {
-                        result += line.replaceAll("<", "&lt;").replaceAll(">", "&gt;") + "<br>";
-                    }
+                return string.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+            }
+            function generateLinkTag(link_title, link_url){
+                if (document.getElementById("qrcode-select").value=="disabled"){ // Normal link option
+                    let hyperlink_a = document.createElement("a");
+                    hyperlink_a.target = "_blank";
+                    hyperlink_a.href = link_url;
+                    hyperlink_a.textContent = htmlEncoding(link_title);
+                    return hyperlink_a
+                } else { // QR Code options
+                    let tempnode = document.createElement("div");
+                    tempnode.className = "link";
+                    tempnode.textContent = htmlEncoding(link_title);
+                    let qrcode_container = document.createElement("qrcode");
+                    tempnode.appendChild(qrcode_container);
+                    tempnode.addEventListener("click",(event) => {
+                        showQRCode(event,qrcode_container);
+                    });
+                    let qr = new QR_code.QRCode(qrcode_container,QR_code.options);
+                    qr.makeCode(link_url); //TODO: a very dirty way to do this, and a <canvas> element stays behind
+                    return tempnode;
                 }
-                return result;
             }
             function changeSlide(n){ //TODO add help and error messages
                 document.getElementById("s"+slide_i).style.display = "none";
@@ -283,7 +385,7 @@
                 border-style: solid;
                 position: relative;
                 color: #000000;
-                z-index: 1;
+                z-index: 2;
             }
             #display-settings-title{
                 color: #2006cc;
@@ -404,6 +506,16 @@
             }
             notes {
                 display: none;
+            }
+            .link {
+                color: lightgreen;
+                display: grid;
+            }
+            qrcode {
+                position: absolute;
+                place-self: center;
+                display: none;
+                object-fit: contain;
             }
             #presentation-placeholder {
                 color: var(--placeholder-color);
