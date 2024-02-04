@@ -1,18 +1,19 @@
-Hello
+Welcome to TMPTSCH
+(use arrow keys to navigate)
 
-Small (actually long) Demo
+TMPTSCH stands for
+Takahashi Method Presentation Tool Sent Clone HTML
 
-Use arrow keys to navigate
+Yeah, my naming sense is bad.
+
+[Takahashi Method](https://en.wikipedia.org/wiki/Takahashi_method) Presentations
+Have a phrase per slide.
+
+Now feature showcase!
 
 Hit the H key
 
 Hit the F key
-
-Hit the H key again
-(Make menu visible)
-
-Hit the F key again 
-(Exit fullscreen)
 
 There is a dark mode toggle
 
@@ -21,12 +22,12 @@ Check if it works
 
 Link to repo/help is in top right corner
 
-@https://picsum.photos/200/300
-^ Look at this notation for images!
-This text isn't displayed for... reasons
-I found a hack in my own program and idk what to do about it...
+Images also work
 
-Hit the E key 
+@https://picsum.photos/200/300.jpg
+^ Look at this notation for images!
+
+Hit the E key
 and go back a slide
 
 Now QR CODES!!!
@@ -43,17 +44,20 @@ Now presenter's Notes
 Checkmark the box on the top left
 // And hit R
 
-Open the dev console:
+Now see the dev console:
 (rightclick > inspect > console)
-// Go back and forth between slides
-// Text starting with "//" will become presetner notes.
+// Your notes will appear here
+// Lines starting with "//" will become presetner notes.
+// Now go to the next slides, the notes for them should appear. Check the editor to see the syntax.
 // (the notes on the previous slides are just for showcase)
 
 Want to make your own presentation?
 
-Well, the built-in editor is kinda bad 
+Well, the built-in editor is kinda bad
+// I may or may not go fix it
 
 So you will have to write some plaintext files
 and click [Choose File] to import them
+// Not newbie friendly... yeah
 
 Check repo for more instructions & info

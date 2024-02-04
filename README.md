@@ -22,9 +22,16 @@ Obviously the website can't read images that are localy on your computer. Howeve
 
 ### Download
 
-If you want it all to be local with no contact to the internet, you can just hit `Ctrl + S` (or  `Cmd + S` on Mac) and save the website as html. Because of the way I made it, it will remain as a single file (and the slides you already created will be saved as well).
+If you want it all to be local with no contact to the internet, you can just hit `Ctrl + S` (or  `Cmd + S` on Mac) and save the website as html. 
 
-- [ ] Features described above are not yet polished.
+Because of the way I made it, it will remain as a single file and the slides you already created will be saved as well (except images, those will be downloaded into a spearate folder and all the link will be a mess).
+
+- [ ] Figure out better image downloading
+
+Warning: when you hit `Ctrl + S` you browser will offer you 3 options:
+- `Webpage, HTML Only`: Won't save any of your progress
+- `Webpage, Single File`: Will save everything into a `.mht` (Microsoft) format that in traditional Microsoft fashion is impossible to open.
+- **`Webpage, Complete`:** is the one you want to choose, but it is also the one that will download your images (and `qrcode.js`) into a folder and they will break.
 
 ## Usage
 
@@ -134,12 +141,27 @@ A lot of the code was written with Weenote and Big as references.
 
 [qrcode.js](https://davidshimjs.github.io/qrcodejs/) for QR Code generation. (and Cloudflare CDN for loading the script form the web)
 
-Used [Lorem Picusm](https://picsum.photos/) for demo placeholder images.
+Used [Lorem Picusm](https://picsum.photos/) and [Placehold](https://placehold.co/) for demo placeholder images.
 
-### Contribute?
+### Contribute? / Docs
 
 I don't know why you would want to do something here, but if you do be ready for an absolute mess of a CSS and a bunch of spaggetti code. In order to handle QR Codes, comments, and the editting features all while making sure you can save and open the file without anything breaking, I made the code a complete mess.
 
 And yes there are quite a few "you have to do this, because if you don't an edgecase breaks" sort of things.
 
 Because this is my first "major" app, there is no consistency in the code whatsoever, and although I did try to follow "best practices," manage your expectations.
+
+Everything Should be Inline to make the thing remain a single HTML file.
+
+Colors:
+Blue: `#0A73A7` and `#0A42C5`
+Orange: `#E2A619` and `#E29002` and `#C37515`
+
+Demo Design:
+- On a fresh browser profile (no extensions) import from demo.md
+- turn hide the header menu
+- after saving, change all urls and image links to what they are supposed to be.
+
+Favicon:
+- to keep it all a single file, a separate version of the favicon is inline
+  - Encode using this: https://yoksel.github.io/url-encoder/

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html data-redeviation-bs-uid="sq23gqy9v9"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
         <title>Takahashi Method Presentation</title>
-        <link rel="icon" type="image/x-icon" href="favicon.svg">
-        <div id="presentation-editor">
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml, %3Csvg width=&#39;256&#39; height=&#39;230&#39; viewBox=&#39;0 0 256 230&#39; fill=&#39;none&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39;%3E%3Crect x=&#39;10&#39; y=&#39;10&#39; width=&#39;236&#39; height=&#39;136&#39; rx=&#39;10&#39; fill=&#39;white&#39; stroke=&#39;%230A73A7&#39; stroke-width=&#39;20&#39; stroke-linejoin=&#39;round&#39;/%3E%3Cline x1=&#39;20&#39; y1=&#39;35&#39; x2=&#39;236&#39; y2=&#39;35&#39; stroke=&#39;%23E29002&#39; stroke-width=&#39;30&#39;/%3E%3Cpath d=&#39;M 128 35 L 128 220 M 64 220 L 192 220&#39; stroke=&#39;%23E29002&#39; stroke-width=&#39;20&#39; stroke-linejoin=&#39;round&#39; stroke-linecap=&#39;round&#39;/%3E%3C/svg%3E%0A">
+        </head><body><div id="menubar" style="display: none;">
+            <div id="presentation-editor">
                 <div id="presentation-editor-title" class="menu-title">ADD SLIDES</div>
                 <div>
                     <input type="file" id="file-input" class="file-input">
@@ -34,7 +35,7 @@
                         <circle cx="40" cy="50" r="30" id="theme-circle-active" fill="var(--active-theme-color)"></circle>
                     </svg>
                 </button>
-                <div id="slide-count-display">Slide: 1 of 22</div>
+                <div id="slide-count-display">Slide: 1 of 23</div>
                 <div style="position: absolute">
                     QR Codes: 
                     <select name="qrcode-select" id="qrcode-select">
@@ -61,7 +62,7 @@
             </div>
         </div>
         <script>
-            //FIXME: repo link is camouflage
+            //TODO: maybe add margin to the slides, so text isn't at the edges
             let slide_i = 0;
             let slide_total = 0;
             const header_element = document.getElementById("menubar");
@@ -82,8 +83,8 @@
             };
             onload = () => {
                 presentation = document.getElementById("presentation");
-                /* presentation.addEventListener('click', function(event) {
-                    hideHeader();
+                /* presentation.addEventListener('click', function(event) { //Turned off for demo
+                    hideHeader(); // FIXME: clicking on links triggers this event
                 }); */
                 slide_total = presentation.querySelectorAll(".slide").length;
                 if (slide_total == 0 && presentation.childElementCount == 0){
@@ -149,7 +150,7 @@
                 document.getElementById("file-input").value = "";
             });
             document.getElementById("qrcode-select").addEventListener("change", (e)=>{
-                loadQRCodeLib(document.getElementById("qrcode-select").value);
+                loadQRCodeLib(document.getElementById("qrcode-select").value); //TODO: make it auto regenerate all slides
             });
             function exportToTXT(){
                 if (slide_total==0){
@@ -327,12 +328,12 @@
                 }
             }
             function hideEditor(){
-                if (editor_sidebar.style.display == "none"){
+                if (editor_sidebar.style.display == ""){
                     if (slide_total > 0){
                         editor_sidebar.style.display = "block";
                     }
                 } else {
-                    editor_sidebar.style.display = "none";
+                    editor_sidebar.style.display = "";
                 }
             }
             function showQRCode(event, element){
@@ -398,7 +399,7 @@
             }
             #menubar {
                 margin-top: 0px;
-                background-color: #1919b7;
+                background-color: #0A73A7;
                 color: #BBBBBB;
                 height: 15%;
                 width: 100%;
@@ -410,29 +411,30 @@
             }
             #display-settings {
                 height: 120%;
-                background-color: #cc7606;
+                background-color: #E29002;
                 border-width: 5px;
-                border-color: #9c5a05;
+                border-color: #C37515;
                 border-style: solid;
+                border-radius: 0px 0px 20px 20px;
                 position: relative;
                 color: #000000;
                 z-index: 2;
             }
             #display-settings-title{
-                color: #2006cc;
+                color: #0A42C5;
             }
             .menu-title {
                 width 100%;
                 text-align: center;
             }
             #presentation-editor-title {
-                color: #CB7606;
+                color: #E2A619;
             }
             #slide-count-display {
                 position: relative;
             }
             hl { /* custom highlight tag for shortcut letters*/
-                color: #2006cc;
+                color: #0A42C5;
             }
             #shortcuts-text {
                 padding-left: 5px;
@@ -441,7 +443,7 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                background-color: #9c5a05;
+                background-color: #C37515;
                 border: none;
                 border-radius: 0px 0px 0px 20px;
             }
@@ -501,7 +503,7 @@
                 display: none;
             }
             #editor-sidebar {
-                background-color: lightblue;
+                background-color: #0A73A7;
                 width: 20%;
                 display: none;
                 position: absolute;
@@ -539,11 +541,11 @@
                 display: none;
             }
             a {
-                color: #00e;
+                color: #0A42C5;
             }
             .link {
                 display: inline;
-                color: #00e;
+                color: #0A42C5;
                 text-decoration: underline;
             }
             qrcode {
@@ -575,29 +577,32 @@
     
     
         <div id="main-display-area">
-            <div id="editor-sidebar">
+            <div id="editor-sidebar" style="">
                 <button id="close-editor-button" onclick="hideEditor()">&#8667;</button>
                 <button id="confirm-edit" onclick="editSlideContent()">Enter</button>
                 <textarea type="text" id="slide-content-editor"></textarea>
             </div>
             <div id="presentation">
-            <div data-slide_content="Hello" class="slide" id="s0" style="display: block; font-size: 601px;">Hello</div><div data-slide_content="Small (actually long) Demo" class="slide" id="s1" style="display: none; font-size: 116px;">Small (actually long) Demo</div><div data-slide_content="Use arrow keys to navigate" class="slide" id="s2" style="display: none; font-size: 115px;">Use arrow keys to navigate</div><div data-slide_content="Hit the H key" class="slide" id="s3" style="display: none; font-size: 236px;">Hit the H key</div><div data-slide_content="Hit the F key" class="slide" id="s4" style="display: none; font-size: 241px;">Hit the F key</div><div data-slide_content="Hit the H key again
-(Make menu visible)" class="slide" id="s5" style="display: none; font-size: 156px;">Hit the H key again<br>(Make menu visible)</div><div data-slide_content="Hit the F key again 
-(Exit fullscreen)" class="slide" id="s6" style="display: none; font-size: 164px;">Hit the F key again <br>(Exit fullscreen)</div><div data-slide_content="There is a dark mode toggle" class="slide" id="s7" style="display: none; font-size: 111px;">There is a dark mode toggle</div><div data-slide_content="Here is a [link](https://github.com/andrei-akopian/TakahashiSentHtml)
-Check if it works " class="slide" id="s8" style="display: none; font-size: 186px;">Here is a <a target="_blank" href="https://github.com/andrei-akopian/TakahashiSentHtml">link</a><br>Check if it works </div><div data-slide_content="Link to repo/help is in top right corner" class="slide" id="s9" style="display: none; font-size: 80px;">Link to repo/help is in top right corner</div><div data-slide_content="@https://picsum.photos/200/300
-^ Look at this notation for images!
-This text isn&#39;t displayed for... reasons
-I found a hack in my own program and idk what to do about it..." class="slide" id="s10" style="display: none;"><img src="https://picsum.photos/200/300" alt="https://picsum.photos/200/300" class="image"></div><div data-slide_content="Hit the E key 
-and go back a slide" class="slide" id="s11" style="display: none; font-size: 163px;">Hit the E key <br>and go back a slide</div><div data-slide_content="Now QR CODES!!!" class="slide" id="s12" style="display: none; font-size: 179px;">Now QR CODES!!!</div><div data-slide_content="In the orange settings
+            <div data-slide_content="Welcome to TMPTSCH
+(use arrow keys to navigate)" class="slide" id="s0" style="display: block; font-size: 113px;">Welcome to TMPTSCH<br>(use arrow keys to navigate)</div><div data-slide_content="TMPTSCH stands for
+Takahashi Method Presentation Tool Sent Clone HTML" class="slide" id="s1" style="display: none; font-size: 60px;">TMPTSCH stands for<br>Takahashi Method Presentation Tool Sent Clone HTML</div><div data-slide_content="Yeah, my naming sense is bad." class="slide" id="s2" style="display: none; font-size: 105px;">Yeah, my naming sense is bad.</div><div data-slide_content="[Takahashi Method](https://en.wikipedia.org/wiki/Takahashi_method) Presentations
+Have a phrase per slide." class="slide" id="s3" style="display: none; font-size: 101px;"><a target="_blank" href="https://en.wikipedia.org/wiki/Takahashi_method">Takahashi Method</a> Presentations<br>Have a phrase per slide.</div><div data-slide_content="Now feature showcase!" class="slide" id="s4" style="display: none; font-size: 138px;">Now feature showcase!</div><div data-slide_content="Hit the H key" class="slide" id="s5" style="display: none; font-size: 243px;">Hit the H key</div><div data-slide_content="Hit the F key" class="slide" id="s6" style="display: none; font-size: 248px;">Hit the F key</div><div data-slide_content="There is a dark mode toggle" class="slide" id="s7" style="display: none; font-size: 114px;">There is a dark mode toggle</div><div data-slide_content="Here is a [link](https://github.com/andrei-akopian/TakahashiSentHtml)
+Check if it works " class="slide" id="s8" style="display: none; font-size: 191px;">Here is a <a target="_blank" href="https://github.com/andrei-akopian/TakahashiSentHtml">link</a><br>Check if it works </div><div data-slide_content="Link to repo/help is in top right corner" class="slide" id="s9" style="display: none; font-size: 82px;">Link to repo/help is in top right corner</div><div data-slide_content="Images also work" class="slide" id="s10" style="display: none; font-size: 188px;">Images also work</div><div data-slide_content="@https://picsum.photos/200/300.jpg
+^ Look at this notation for images!" class="slide" id="s11" style="display: none;"><img src="https://picsum.photos/200/300.jpg" alt="https://picsum.photos/200/300.jpg" class="image"></div><div data-slide_content="Hit the E key
+and go back a slide" class="slide" id="s12" style="display: none; font-size: 168px;">Hit the E key<br>and go back a slide</div><div data-slide_content="Now QR CODES!!!" class="slide" id="s13" style="display: none; font-size: 185px;">Now QR CODES!!!</div><div data-slide_content="In the orange settings
 Click on QR Code dropdown
-and pick either option" class="slide" id="s13" style="display: none; font-size: 112px;">In the orange settings<br>Click on QR Code dropdown<br>and pick either option</div><div data-slide_content="Hit the R key (once)
-// And go back to the slide with the link" class="slide" id="s14" style="display: none; font-size: 77px;">Hit the R key (once)<br>// And go back to the slide with the link</div><div data-slide_content="Now presenter&#39;s Notes" class="slide" id="s15" style="display: none; font-size: 140px;">Now presenter's Notes</div><div data-slide_content="Checkmark the box on the top left
-// And hit R" class="slide" id="s16" style="display: none; font-size: 90px;">Checkmark the box on the top left<br>// And hit R</div><div data-slide_content="Open the dev console:
+and pick either option" class="slide" id="s14" style="display: none; font-size: 116px;">In the orange settings<br>Click on QR Code dropdown<br>and pick either option</div><div data-slide_content="Hit the R key (once)
+// And go back to the slide with the link" class="slide" id="s15" style="display: none; font-size: 79px;">Hit the R key (once)<br>// And go back to the slide with the link</div><div data-slide_content="Now presenter&#39;s Notes" class="slide" id="s16" style="display: none; font-size: 145px;">Now presenter's Notes</div><div data-slide_content="Checkmark the box on the top left
+// And hit R" class="slide" id="s17" style="display: none; font-size: 92px;">Checkmark the box on the top left<br>// And hit R</div><div data-slide_content="Now see the dev console:
 (rightclick &gt; inspect &gt; console)
-// Go back and forth between slides
-// Text starting with &quot;//&quot; will become presetner notes.
-// (the notes on the previous slides are just for showcase)" class="slide" id="s17" style="display: none; font-size: 53px;">Open the dev console:<br>(rightclick &gt; inspect &gt; console)<br>// Go back and forth between slides<br>// Text starting with "//" will become presetner notes.<br>// (the notes on the previous slides are just for showcase)</div><div data-slide_content="Want to make your own presentation?" class="slide" id="s18" style="display: none; font-size: 82px;">Want to make your own presentation?</div><div data-slide_content="Well, the built-in editor is kinda bad " class="slide" id="s19" style="display: none; font-size: 85px;">Well, the built-in editor is kinda bad </div><div data-slide_content="So you will have to write some plaintext files
-and click [Choose File] to import them" class="slide" id="s20" style="display: none; font-size: 68px;">So you will have to write some plaintext files<br>and click [Choose File] to import them</div><div data-slide_content="Check repo for more instructions &amp; info
-" class="slide" id="s21" style="display: none; font-size: 78px;">Check repo for more instructions &amp; info<br></div></div>
+// Your notes will appear here
+// Lines starting with &quot;//&quot; will become presetner notes.
+// Now go to the next slides, the notes for them should appear. Check the editor to see the syntax.
+// (the notes on the previous slides are just for showcase)" class="slide" id="s18" style="display: none; font-size: 32px;">Now see the dev console:<br>(rightclick &gt; inspect &gt; console)<br>// Your notes will appear here<br>// Lines starting with "//" will become presetner notes.<br>// Now go to the next slides, the notes for them should appear. Check the editor to see the syntax.<br>// (the notes on the previous slides are just for showcase)</div><div data-slide_content="Want to make your own presentation?" class="slide" id="s19" style="display: none; font-size: 84px;">Want to make your own presentation?</div><div data-slide_content="Well, the built-in editor is kinda bad
+// I may or may not go fix it" class="slide" id="s20" style="display: none; font-size: 88px;">Well, the built-in editor is kinda bad<br>// I may or may not go fix it</div><div data-slide_content="So you will have to write some plaintext files
+and click [Choose File] to import them
+// Not newbie friendly... yeah" class="slide" id="s21" style="display: none; font-size: 70px;">So you will have to write some plaintext files<br>and click [Choose File] to import them<br>// Not newbie friendly... yeah</div><div data-slide_content="Check repo for more instructions &amp; info
+" class="slide" id="s22" style="display: none; font-size: 80px;">Check repo for more instructions &amp; info<br></div></div>
         </div>
+    
 </body></html>

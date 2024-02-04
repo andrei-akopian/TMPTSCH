@@ -1,7 +1,8 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html>
     <head>
         <title>Takahashi Method Presentation</title>
-        <link rel="icon" type="image/x-icon" href="favicon.svg">
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml, %3Csvg width='256' height='230' viewBox='0 0 256 230' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='10' y='10' width='236' height='136' rx='10' fill='white' stroke='%230A73A7' stroke-width='20' stroke-linejoin='round'/%3E%3Cline x1='20' y1='35' x2='236' y2='35' stroke='%23E29002' stroke-width='30'/%3E%3Cpath d='M 128 35 L 128 220 M 64 220 L 192 220' stroke='%23E29002' stroke-width='20' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E%0A">
         <div id="menubar">
             <div id="presentation-editor">
                 <div id="presentation-editor-title" class="menu-title">ADD SLIDES</div>
@@ -62,7 +63,7 @@
             </div>
         </div>
         <script>
-            //FIXME: repo link is camouflage
+            //TODO: maybe add margin to the slides, so text isn't at the edges
             let slide_i = 0;
             let slide_total = 0;
             const header_element = document.getElementById("menubar");
@@ -150,7 +151,7 @@
                 document.getElementById("file-input").value = "";
             });
             document.getElementById("qrcode-select").addEventListener("change", (e)=>{
-                loadQRCodeLib(document.getElementById("qrcode-select").value);
+                loadQRCodeLib(document.getElementById("qrcode-select").value); //TODO: make it auto regenerate all slides
             });
             function exportToTXT(){
                 if (slide_total==0){
@@ -328,12 +329,12 @@
                 }
             }
             function hideEditor(){
-                if (editor_sidebar.style.display == "none"){
+                if (editor_sidebar.style.display == ""){
                     if (slide_total > 0){
                         editor_sidebar.style.display = "block";
                     }
                 } else {
-                    editor_sidebar.style.display = "none";
+                    editor_sidebar.style.display = "";
                 }
             }
             function showQRCode(event, element){
@@ -399,7 +400,7 @@
             }
             #menubar {
                 margin-top: 0px;
-                background-color: #1919b7;
+                background-color: #0A73A7;
                 color: #BBBBBB;
                 height: 15%;
                 width: 100%;
@@ -411,29 +412,30 @@
             }
             #display-settings {
                 height: 120%;
-                background-color: #cc7606;
+                background-color: #E29002;
                 border-width: 5px;
-                border-color: #9c5a05;
+                border-color: #C37515;
                 border-style: solid;
+                border-radius: 0px 0px 20px 20px;
                 position: relative;
                 color: #000000;
                 z-index: 2;
             }
             #display-settings-title{
-                color: #2006cc;
+                color: #0A42C5;
             }
             .menu-title {
                 width 100%;
                 text-align: center;
             }
             #presentation-editor-title {
-                color: #CB7606;
+                color: #E2A619;
             }
             #slide-count-display {
                 position: relative;
             }
             hl { /* custom highlight tag for shortcut letters*/
-                color: #2006cc;
+                color: #0A42C5;
             }
             #shortcuts-text {
                 padding-left: 5px;
@@ -442,7 +444,7 @@
                 position: absolute;
                 top: 0;
                 right: 0;
-                background-color: #9c5a05;
+                background-color: #C37515;
                 border: none;
                 border-radius: 0px 0px 0px 20px;
             }
@@ -502,7 +504,7 @@
                 display: none;
             }
             #editor-sidebar {
-                background-color: lightblue;
+                background-color: #0A73A7;
                 width: 20%;
                 display: none;
                 position: absolute;
@@ -540,11 +542,11 @@
                 display: none;
             }
             a {
-                color: #00e;
+                color: #0A42C5;
             }
             .link {
                 display: inline;
-                color: #00e;
+                color: #0A42C5;
                 text-decoration: underline;
             }
             qrcode {
