@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html data-redeviation-bs-uid="sq23gqy9v9"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
         <title>Takahashi Method Presentation</title>
-        <link rel="icon" type="image/x-icon" href="file:///Users/andrei/Documents/Coding/Projects/TakahashiSentHtml/favicon.svg">
-        <style class="redeviation-bs-style" data-name="content">/*! (c) Philipp Koenig under GPL-3.0 */
-body>div#redeviation-bs-indicator>div{opacity:0;pointer-events:none}body>#redeviation-bs-overlay.redeviation-bs-visible,body>#redeviation-bs-sidebar.redeviation-bs-visible{opacity:1;pointer-events:auto}body.redeviation-bs-noscroll{overflow:hidden !important}body>div#redeviation-bs-indicator>div{position:absolute;transform:translate3d(-24px, 0, 0);top:0;left:0;width:24px !important;height:100%;background:rgba(0,0,0,0.5);border-radius:0 10px 10px 0;transition:opacity .3s,transform .3s;z-index:2}body>div#redeviation-bs-indicator>div>span{-webkit-mask:no-repeat center/24px;-webkit-mask-image:url(chrome-extension://caklapplajeocdfddmnmondejlloddee/img/icon-bookmark.svg);background-color:#ffffff;position:absolute;display:block;top:0;left:0;width:100%;height:100%}body>div#redeviation-bs-indicator[data-pos=right]{left:auto;right:0}body>div#redeviation-bs-indicator[data-pos=right]>div{transform:translate3d(24px, 0, 0);left:auto;right:0;border-radius:10px 0 0 10px}body>div#redeviation-bs-indicator.redeviation-bs-fullHeight>div{border-radius:0}body>div#redeviation-bs-indicator.redeviation-bs-hover>div{transform:translate3d(0, 0, 0);opacity:1}body>div#redeviation-bs-indicator[data-pos=left].redeviation-bs-has-lsb{height:100% !important;top:0 !important}body>div#redeviation-bs-indicator[data-pos=left].redeviation-bs-has-lsb>div{background:rgba(0,0,0,0)}body>div#redeviation-bs-indicator[data-pos=left].redeviation-bs-has-lsb>div>span{-webkit-mask-position-y:20px}body>#redeviation-bs-sidebar{width:350px;max-width:none;height:0;z-index:2147483646;background-color:rgba(0,0,0,0.6) !important;color-scheme:auto !important;speak:none;border:none;display:block !important;transform:translate3d(-350px, 0, 0);transition:width 0s .3s,height 0s .3s,opacity .3s,transform .3s}body>#redeviation-bs-sidebar[data-pos=right]{left:auto;right:0;transform:translate3d(350px, 0, 0)}body>#redeviation-bs-sidebar.redeviation-bs-visible{width:calc(100% + 350px);height:100%;transform:translate3d(0, 0, 0);transition:opacity .3s,transform .3s}body>#redeviation-bs-sidebar.sidepanel{width:100% !important}body>#redeviation-bs-sidebar.redeviation-bs-hideMask{background:none !important}body>#redeviation-bs-sidebar.redeviation-bs-hideMask:not(.redeviation-bs-hover){width:calc(350px + 50px)}body>#redeviation-bs-overlay{width:100%;max-width:none;height:100%;z-index:2147483647;border:none;speak:none;background:rgba(0,0,0,0.5) !important;color-scheme:auto !important;transition:opacity .3s}</style></head><body><div id="menubar">
-            <div id="presentation-editor">
+        <link rel="icon" type="image/x-icon" href="favicon.svg">
+        <div id="presentation-editor">
                 <div id="presentation-editor-title" class="menu-title">ADD SLIDES</div>
                 <div>
                     <input type="file" id="file-input" class="file-input">
@@ -84,9 +82,9 @@ body>div#redeviation-bs-indicator>div{opacity:0;pointer-events:none}body>#redevi
             };
             onload = () => {
                 presentation = document.getElementById("presentation");
-                presentation.addEventListener('click', function(event) {
-                    hideHeader(); // FIXME: clicking on links triggers this event
-                });
+                /* presentation.addEventListener('click', function(event) {
+                    hideHeader();
+                }); */
                 slide_total = presentation.querySelectorAll(".slide").length;
                 if (slide_total == 0 && presentation.childElementCount == 0){
                     let placeholder = document.createElement("div");
@@ -602,5 +600,4 @@ and pick either option" class="slide" id="s13" style="display: none; font-size: 
 and click [Choose File] to import them" class="slide" id="s20" style="display: none; font-size: 68px;">So you will have to write some plaintext files<br>and click [Choose File] to import them</div><div data-slide_content="Check repo for more instructions &amp; info
 " class="slide" id="s21" style="display: none; font-size: 78px;">Check repo for more instructions &amp; info<br></div></div>
         </div>
-    
-<bookmark-sidebar-r3qe6n8gru id="redeviation-bs-sidebar" class="notranslate noAnimations" aria-hidden="true" data-theme="default" data-pos="right"><template shadowrootmode="closed"><iframe style="margin:0;padding: 0;border: none;width: 100%;height: 100%;"></iframe></template></bookmark-sidebar-r3qe6n8gru><div id="redeviation-bs-indicator" data-theme="default" class="noAnimations redeviation-bs-fullHeight" style="height: 100%; top: 0%;"></div></body></html>
+</body></html>
