@@ -9,7 +9,7 @@ But contradictory to the principles of the method this Clone is bloated with fun
 
 The purpose of this application is to display presentations generated from TXT files (other file formats might happen to work but are not supported). The editing features are not intended be used for making presentations, only quick edits for typos.
 
-# [Try](https://andrei-akopian.github.io/TakahashiSentHtml/)
+# [DEMO](https://andrei-akopian.github.io/TakahashiSentHtml/demo)
 
 ## Install/Download
 
@@ -30,7 +30,14 @@ If you want it all to be local with no contact to the internet, you can just hit
 
 Standard `sent` syntax, if you know it, you are good to go. (check image syntax tho!)
 
+For example see `demo.md`.
+
 If you don't, come back another day when I have better instructions ready.
+
+Have and save every version of your presentation. Because the
+- [ ] slide insertion and
+- [ ] slide deletion
+are not yet implemented, you have no way of undoing anything you did (other than resetting to a backup).
 
 ### Hotkeys
 
@@ -65,10 +72,9 @@ If you enter links in the markdown format `[Example](https://example.com/)` the 
 
 QR Codes features is implemented using [qrcode.js](https://davidshimjs.github.io/qrcodejs/). You can choose where you wish to load the library from using the dropdown (Local, or CDN). If you are using the github pages site, selecting the local option will work as a `qrcode.js` script is in this repository, but if you have downloaded this app you might want to use the CDN (by Cloudflare) option, and if it gets cached in your browser it should work even offline.
 
-Open a QR code by clicking on the hyperlink text, and close it by clicking on the QR code itself.
+- [ ] I will figure out how CDNs work and make the loading simpler, mb allow saving QR codes as pngs.
 
-- [ ] QR Code scaling will be implemented in the future
-- [ ] QR Codes are a bit wonky right now, so menage your expectations.
+Open a QR code by clicking on the hyperlink text, and close it by clicking on the QR code itself.
 
 ## Roadmap/Features
 
@@ -78,8 +84,8 @@ Features:
 - dark/light modes
 
 Custom features:
-- [ ] all links open/autogenerate QR codes when in slide mode
-- single html
+- all links open/autogenerate QR codes when in slide mode
+- single html file
 - [ ] minimize JS and html for space?
 - included text editor
   - add new slides for text editor
@@ -127,3 +133,13 @@ Feature coverage and compatibility with other (similar) tools.
 A lot of the code was written with Weenote and Big as references.
 
 [qrcode.js](https://davidshimjs.github.io/qrcodejs/) for QR Code generation. (and Cloudflare CDN for loading the script form the web)
+
+Used [Lorem Picusm](https://picsum.photos/) for demo placeholder images.
+
+### Contribute?
+
+I don't know why you would want to do something here, but if you do be ready for an absolute mess of a CSS and a bunch of spaggetti code. In order to handle QR Codes, comments, and the editting features all while making sure you can save and open the file without anything breaking, I made the code a complete mess.
+
+And yes there are quite a few "you have to do this, because if you don't an edgecase breaks" sort of things.
+
+Because this is my first "major" app, there is no consistency in the code whatsoever, and although I did try to follow "best practices," manage your expectations.
