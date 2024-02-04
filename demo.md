@@ -26,6 +26,7 @@ Images also work
 
 @https://picsum.photos/200/300.jpg
 ^ Look at this notation for images!
+// Only one image per slide, no text
 
 Hit the E key
 and go back a slide
@@ -36,13 +37,13 @@ In the orange settings
 Click on QR Code dropdown
 and pick either option
 
-Hit the R key (once)
-// And go back to the slide with the link
+All link will now show QR Codes!
+// Go back to the slide with the link
 
 Now presenter's Notes
 
 Checkmark the box on the top left
-// And hit R
+// And hit R (refresh slides)
 
 Now see the dev console:
 (rightclick > inspect > console)
@@ -60,4 +61,5 @@ So you will have to write some plaintext files
 and click [Choose File] to import them
 // Not newbie friendly... yeah
 
+[Open WebApp](https://andrei-akopian.github.io/TakahashiSentHtml/index.html)
 Check repo for more instructions & info

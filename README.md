@@ -1,9 +1,11 @@
-# TMPTSCH
+# [TMPTSCH](https://andrei-akopian.github.io/TakahashiSentHtml/index.html)
 Stands for **Takahashi Method Presentation Tool Sent Clone HTML**
 
 As the name suggests this is a presentation making tool based on the [Takahashi method](https://en.wikipedia.org/wiki/Takahashi_method) and inspired by the [sent](https://tools.suckless.org/sent/) (from [suckless.org](https://suckless.org/)), [Weenote](https://github.com/jed/weenote), and [Big](https://github.com/tmcw/big), while also maintaining some compatibility with them. 
 
 But contradictory to the principles of the method this Clone is bloated with functionality while remaning a single html file so you can easily save and use it offline.
+
+- [ ] Add links to the tool here and in the Demo
 
 ### Purpose
 
@@ -11,10 +13,12 @@ The purpose of this application is to display presentations generated from TXT f
 
 # [DEMO](https://andrei-akopian.github.io/TakahashiSentHtml/demo)
 
+# [Open WebApp](https://andrei-akopian.github.io/TakahashiSentHtml/index.html)
+
 ## Install/Download
 
 ### Web version
-If you already have a (text-only) presentation file for the original `sent`, you can go streight to [the site](https://andrei-akopian.github.io/TakahashiSentHtml/) and clicl `Choose File` in the top left corner.
+If you already have a (text-only) presentation file for the original `sent`, you can go streight to [the site](https://andrei-akopian.github.io/TakahashiSentHtml/) and click `Choose File` in the top left corner.
 
 Why text only (no images)?
 
@@ -25,8 +29,6 @@ Obviously the website can't read images that are localy on your computer. Howeve
 If you want it all to be local with no contact to the internet, you can just hit `Ctrl + S` (or  `Cmd + S` on Mac) and save the website as html. 
 
 Because of the way I made it, it will remain as a single file and the slides you already created will be saved as well (except images, those will be downloaded into a spearate folder and all the link will be a mess).
-
-- [ ] Figure out better image downloading
 
 Warning: when you hit `Ctrl + S` you browser will offer you 3 options:
 - `Webpage, HTML Only`: Won't save any of your progress
@@ -161,6 +163,7 @@ Demo Design:
 - On a fresh browser profile (no extensions) import from demo.md
 - turn hide the header menu
 - after saving, change all urls and image links to what they are supposed to be.
+- turn off image source detection
 
 Favicon:
 - to keep it all a single file, a separate version of the favicon is inline

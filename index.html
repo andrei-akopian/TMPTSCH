@@ -63,7 +63,7 @@
             </div>
         </div>
         <script>
-            //TODO: maybe add margin to the slides, so text isn't at the edges
+            //TODO: make persistent configuration, and add dropdown to prioritize image loading source if missmatch
             let slide_i = 0;
             let slide_total = 0;
             const header_element = document.getElementById("menubar");
@@ -72,8 +72,6 @@
             let slide_content_editor;
             let presentation;
             let slide_count_display;
-            let popup_box;
-            let temp;
             const QR_code = {
                 loaded: false,
                 QRCode: null,
@@ -87,17 +85,43 @@
                 presentation.addEventListener('click', function(event) {
                     hideHeader(); // FIXME: clicking on links triggers this event
                 });
+                slide_count_display = document.getElementById("slide-count-display");
+                editor_sidebar = document.getElementById("editor-sidebar");
+                slide_content_editor = document.getElementById("slide-content-editor");
                 slide_total = presentation.querySelectorAll(".slide").length;
+                // Puts placeholder slide if there are no slides
                 if (slide_total == 0 && presentation.childElementCount == 0){
                     let placeholder = document.createElement("div");
                     placeholder.id = "presentation-placeholder";
                     placeholder.innerText = "No Slides Yet";
                     presentation.appendChild(placeholder);
+                } else { // Handle images having different sources
+                    //TODO: think about the best way to hande this
+                    let images = presentation.querySelectorAll(".image");
+                    let default_to = null;
+                    for (img of images){
+                        if (img.src != img.alt) {
+                            if (default_to==null){
+                                default_to = confirm("Images are using a different source.\n\n" +
+                                "Clicking OK will keep the source.\n" +
+                                "Clicking Cancel will overwrite it with the original source\n\n" +
+                                "Example of a different source: "+img.src+"\n"+
+                                "Example of an original source: "+img.alt+"\n\n"+
+                                "These changes will NOT be saved, so reloading the browser tab will reset this choice."
+                                );
+                            }
+                            if (default_to){
+                                img.parentElement.dataset.slide_content = img.parentElement.dataset.slide_content.replace(img.alt,img.src);
+                            } else {
+                                img.parentElement.dataset.slide_content = img.parentElement.dataset.slide_content.replace(img.src,img.alt);
+                                img.src = img.alt;
+                            }
+                        }
+                    }
+                    if (default_to){
+                        reloadSlides();
+                    }
                 }
-                slide_count_display = document.getElementById("slide-count-display");
-                editor_sidebar = document.getElementById("editor-sidebar");
-                slide_content_editor = document.getElementById("slide-content-editor");
-                popup_box = document.getElementById("popup-box");
             };
             window.onbeforeunload = () => {
                 return "Your progress will be lost. You can save the presentation using Ctrl/Cmd+S";
@@ -151,7 +175,8 @@
                 document.getElementById("file-input").value = "";
             });
             document.getElementById("qrcode-select").addEventListener("change", (e)=>{
-                loadQRCodeLib(document.getElementById("qrcode-select").value); //TODO: make it auto regenerate all slides
+                loadQRCodeLib(document.getElementById("qrcode-select").value);
+                reloadSlides();
             });
             function exportToTXT(){
                 if (slide_total==0){
@@ -202,53 +227,55 @@
             }
             function generateSlideContents(node,text){
                 node.innerHTML = "";
-                if (text[0]=="@"){ //TODO make it possible to add comments to image slides
-                    text=text.trim("").slice(1).split("\n")[0];
-                    let image = document.createElement("img");
-                    image.src = text;
-                    image.alt = text;
-                    image.className = "image";
-                    node.appendChild(image);
-                    node.style.display='none';
-                } else {
-                    let lines = text.split("\n");
-                    for (let line_i=0; line_i<lines.length; line_i++) {
-                        let line = lines[line_i];
-                        if (parse_comments_checkbox.checked && line.slice(0,2)=="//") {
-                            //TODO: there is probably a better way to place the comments
-                            let presenter_note = document.createElement("notes");
-                            presenter_note.innerHTML = line.slice(2);
-                            node.appendChild(presenter_note);
-                        } else {
-                            // parse markdown links
-                            let i = line.indexOf("](");
-                            while (i>=0) { //TODO: doesn't handle all edgecases eg. "Title)[google.com]"
-                                let opening_braket = line.lastIndexOf("[",i);
-                                let closing_parenth = line.indexOf(")");
-                                if (closing_parenth<0 || opening_braket<0) {
-                                    i = line.indexOf("](",i+2);
-                                    continue;
-                                }
-                                let link_title = line.substring(opening_braket+1,i);
-                                let link_url = line.substring(i+2,closing_parenth);
+                let has_image = false;
+                let lines = text.split("\n");
+                for (let line_i=0; line_i<lines.length; line_i++) {
+                    let line = lines[line_i];
+                    if (!has_image && line[0]=="@"){
+                        node.appendChild(generateImage(line.trim("").slice(1)));
+                        node.style.display='none';
+                        has_image = true;
+                    } else if (parse_comments_checkbox.checked && line.slice(0,2)=="//") {
+                        //TODO: there is probably a better way to place the comments
+                        let presenter_note = document.createElement("notes");
+                        presenter_note.innerHTML = line.slice(2);
+                        node.appendChild(presenter_note);
+                    } else if (!has_image) {
+                        // parse markdown links
+                        let i = line.indexOf("](");
+                        while (i>=0) { //TODO: doesn't handle all edgecases eg. "Title)[google.com]"
+                            let opening_braket = line.lastIndexOf("[",i);
+                            let closing_parenth = line.indexOf(")");
+                            if (closing_parenth<0 || opening_braket<0) {
+                                i = line.indexOf("](",i+2);
+                                continue;
+                            }
+                            let link_title = line.substring(opening_braket+1,i);
+                            let link_url = line.substring(i+2,closing_parenth);
 
-                                node.appendChild(document.createTextNode(line.substring(0,opening_braket)));
-                                node.appendChild(generateLinkTag(link_title, link_url));
-                                
-                                line = line.substring(closing_parenth+1);
-                                i = line.indexOf("](");
-                            }
-                            node.appendChild(document.createTextNode(line));
-                            if (line_i<lines.length-1){
-                                node.appendChild(document.createElement("br"));
-                            }
+                            node.appendChild(document.createTextNode(line.substring(0,opening_braket)));
+                            node.appendChild(generateLinkTag(link_title, link_url));
+                            
+                            line = line.substring(closing_parenth+1);
+                            i = line.indexOf("](");
+                        }
+                        node.appendChild(document.createTextNode(line));
+                        if (line_i<lines.length-1){
+                            node.appendChild(document.createElement("br"));
                         }
                     }
-                    fit(node);
                 }
+                fit(node);
             }
-            function htmlEncoding(string){ //not used
-                return string.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+            function generateImage(source){
+                let image = document.createElement("img");
+                image.src = source;
+                image.alt = source;
+                image.onerror = () => {
+                    logAlert("Image failed to laod from "+source);
+                };
+                image.className = "image";
+                return image;
             }
             function generateLinkTag(link_title, link_url){
                 if (document.getElementById("qrcode-select").value=="disabled" || !QR_code.loaded){ // Normal link option
@@ -296,8 +323,8 @@
                 
                 style.display  = "inline";
                 style.fontSize = i + "px";
-
-                style.fontSize = Math.floor(Math.min(i/slide.offsetWidth*innerWidth,i/slide.offsetHeight*innerHeight))+"px";
+                //Math.floor and division by 5 are to add margins to the text
+                style.fontSize = Math.floor(Math.min(i/slide.offsetWidth*innerWidth,i/slide.offsetHeight*innerHeight)/5)*5+"px";
 
                 style.display = "none";
             }
@@ -329,12 +356,12 @@
                 }
             }
             function hideEditor(){
-                if (editor_sidebar.style.display == ""){
+                if (editor_sidebar.style.display === ''){
                     if (slide_total > 0){
                         editor_sidebar.style.display = "block";
                     }
                 } else {
-                    editor_sidebar.style.display = "";
+                    editor_sidebar.style.display = '';
                 }
             }
             function showQRCode(event, element){
