@@ -6,7 +6,7 @@ Takahashi Method Presentation Tool Sent Clone HTML
 
 Yeah, my naming sense is bad.
 
-[Takahashi Method](https://en.wikipedia.org/wiki/Takahashi_method) Presentations
+[Takahashi Method](https://en.wikipedia.org/wiki/TMPTSCH) Presentations
 Have a phrase per slide.
 
 Now feature showcase!
@@ -17,7 +17,7 @@ Hit the F key
 
 There is a dark mode toggle
 
-Here is a [link](https://github.com/andrei-akopian/TakahashiSentHtml)
+Here is a [link](https://github.com/andrei-akopian/TMPTSCH)
 Check if it works 
 
 Link to repo/help is in top right corner
@@ -61,5 +61,5 @@ So you will have to write some plaintext files
 and click [Choose File] to import them
 // Not newbie friendly... yeah
 
-[Open WebApp](https://andrei-akopian.github.io/TakahashiSentHtml/index.html)
+[Open WebApp](https://andrei-akopian.github.io/TMPTSCH/index.html)
 Check repo for more instructions & info

@@ -1,24 +1,24 @@
-# [TMPTSCH](https://andrei-akopian.github.io/TakahashiSentHtml/index.html)
+# [TMPTSCH](https://andrei-akopian.github.io/TMPTSCH/index.html)
 Stands for **Takahashi Method Presentation Tool Sent Clone HTML**
 
 As the name suggests this is a presentation making tool based on the [Takahashi method](https://en.wikipedia.org/wiki/Takahashi_method) and inspired by the [sent](https://tools.suckless.org/sent/) (from [suckless.org](https://suckless.org/)), [Weenote](https://github.com/jed/weenote), and [Big](https://github.com/tmcw/big), while also maintaining some compatibility with them. 
 
 But contradictory to the principles of the method this Clone is bloated with functionality while remaning a single html file so you can easily save and use it offline.
 
-- [ ] Add links to the tool here and in the Demo
+My Blog post: [About Takahashi Method](https://andrei-akopian.bearblog.dev/about-takahashi-method/)
 
 ### Purpose
 
 The purpose of this application is to display presentations generated from TXT files (other file formats might happen to work but are not supported). The editing features are not intended be used for making presentations, only quick edits for typos.
 
-# [DEMO](https://andrei-akopian.github.io/TakahashiSentHtml/demo)
+# [DEMO](https://andrei-akopian.github.io/TMPTSCH/demo)
 
-# [Open WebApp](https://andrei-akopian.github.io/TakahashiSentHtml/index.html)
+# [Open WebApp](https://andrei-akopian.github.io/TMPTSCH/index.html)
 
 ## Install/Download
 
 ### Web version
-If you already have a (text-only) presentation file for the original `sent`, you can go streight to [the site](https://andrei-akopian.github.io/TakahashiSentHtml/) and click `Choose File` in the top left corner.
+If you already have a (text-only) presentation file for the original `sent`, you can go streight to [the site](https://andrei-akopian.github.io/TMPTSCH/) and click `Choose File` in the top left corner.
 
 Why text only (no images)?
 
@@ -64,7 +64,7 @@ Arrow keys can be used to navigate slides.
 
 You can save this tool/presentation as a `.html` file by hitting Ctrl + S as I described in the [Download](#download) section, you will be able to get image files using usual `@image.png`.
 
-If you are using the [online version](https://andrei-akopian.github.io/TakahashiSentHtml/), you won't be able to use local images, but you can instead link images through their url (`@https://example.com/image.png`). 
+If you are using the [online version](https://andrei-akopian.github.io/TMPTSCH/), you won't be able to use local images, but you can instead link images through their url (`@https://example.com/image.png`). 
 
 ### Presenter's Notes
 `//` will treat the whole line as presenter's notes. 
@@ -136,6 +136,9 @@ Feature coverage and compatibility with other (similar) tools.
 
 [Weenote](https://github.com/jed/weenote)
 - [ ] campatibility
+
+[Slide](https://github.com/trikita/slide)
+- [ ] Steal syntax for markdown formatting
 
 ## Credit
 
