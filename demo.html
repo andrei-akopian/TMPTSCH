@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-        <title>Takahashi Method Presentation</title>
+        <title>Demo Presentation</title>
         <link rel="icon" type="image/svg+xml" href="data:image/svg+xml, %3Csvg width=&#39;256&#39; height=&#39;230&#39; viewBox=&#39;0 0 256 230&#39; fill=&#39;none&#39; xmlns=&#39;http://www.w3.org/2000/svg&#39;%3E%3Crect x=&#39;10&#39; y=&#39;10&#39; width=&#39;236&#39; height=&#39;136&#39; rx=&#39;10&#39; fill=&#39;white&#39; stroke=&#39;%230A73A7&#39; stroke-width=&#39;20&#39; stroke-linejoin=&#39;round&#39;/%3E%3Cline x1=&#39;20&#39; y1=&#39;35&#39; x2=&#39;236&#39; y2=&#39;35&#39; stroke=&#39;%23E29002&#39; stroke-width=&#39;30&#39;/%3E%3Cpath d=&#39;M 128 35 L 128 220 M 64 220 L 192 220&#39; stroke=&#39;%23E29002&#39; stroke-width=&#39;20&#39; stroke-linejoin=&#39;round&#39; stroke-linecap=&#39;round&#39;/%3E%3C/svg%3E%0A">
         </head><body><div id="menubar" style="display: none;">
             <div id="presentation-editor">
@@ -37,11 +37,11 @@
                 </button>
                 <div id="slide-count-display">Slide: 1 of 23</div>
                 <div style="position: absolute">
-                    QR Codes: 
+                    QR Codes library:
                     <select name="qrcode-select" id="qrcode-select">
                         <option value="disabled">Disabled</option>
-                        <option value="CDN">Load via CDN</option>
-                        <option value="local">Load from Local</option>
+                        <option value="CDN">Load library via CDN</option>
+                        <option value="local">Load library from Local</option>
                     </select>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                 presentation = document.getElementById("presentation");
                 /* presentation.addEventListener('click', function(event) {
                     hideHeader(); // FIXME: clicking on links triggers this event
-                }); */
+                 }); */
                 slide_count_display = document.getElementById("slide-count-display");
                 editor_sidebar = document.getElementById("editor-sidebar");
                 slide_content_editor = document.getElementById("slide-content-editor");
@@ -95,33 +95,33 @@
                     placeholder.innerText = "No Slides Yet";
                     presentation.appendChild(placeholder);
                 } /* else { // Handle images having different sources
-                    //TODO: think about the best way to hande this
-                    let images = presentation.querySelectorAll(".image");
-                    let default_to = null;
-                    for (img of images){
-                        if (img.src != img.alt) {
-                            if (default_to==null){
-                                default_to = confirm("Images are using a different source.\n\n" +
-                                "Clicking OK will keep the source.\n" +
-                                "Clicking Cancel will overwrite it with the original source\n\n" +
-                                "Example of a different source: "+img.src+"\n"+
-                                "Example of an original source: "+img.alt+"\n\n"+
-                                "These changes will NOT be saved, so reloading the browser tab will reset this choice."
-                                );
-                            }
-                            if (default_to){
-                                img.parentElement.dataset.slide_content = img.parentElement.dataset.slide_content.replace(img.alt,img.src);
-                            } else {
-                                img.parentElement.dataset.slide_content = img.parentElement.dataset.slide_content.replace(img.src,img.alt);
-                                img.src = img.alt;
-                            }
+                //TODO: think about the best way to hande this
+                let images = presentation.querySelectorAll(".image");
+                let default_to = null;
+                for (img of images){
+                    if (img.src != img.alt) {
+                        if (default_to==null){
+                            default_to = confirm("Images are using a different source.\n\n" +
+                            "Clicking OK will keep the source.\n" +
+                            "Clicking Cancel will overwrite it with the original source\n\n" +
+                            "Example of a different source: "+img.src+"\n"+
+                            "Example of an original source: "+img.alt+"\n\n"+
+                            "These changes will NOT be saved, so reloading the browser tab will reset this choice."
+                            );
+                        }
+                        if (default_to){
+                            img.parentElement.dataset.slide_content = img.parentElement.dataset.slide_content.replace(img.alt,img.src);
+                        } else {
+                            img.parentElement.dataset.slide_content = img.parentElement.dataset.slide_content.replace(img.src,img.alt);
+                            img.src = img.alt;
                         }
                     }
-                    if (default_to){
-                        reloadSlides();
-                    }
-                } */
-                reloadSlides();
+                }
+                if (default_to){
+                    reloadSlides();
+                }
+            } */
+            reloadSlides();
             };
             window.onbeforeunload = () => {
                 return "Your progress will be lost. You can save the presentation using Ctrl/Cmd+S";
@@ -197,7 +197,7 @@
             /*
             // Slide Creation
             */
-            function generateSlides(text){  
+            function generateSlides(text){
                 for (let content of text.split("\n\n")){
                     addSlide(content);
                 }
@@ -255,7 +255,7 @@
 
                             node.appendChild(document.createTextNode(line.substring(0,opening_braket)));
                             node.appendChild(generateLinkTag(link_title, link_url));
-                            
+
                             line = line.substring(closing_parenth+1);
                             i = line.indexOf("](");
                         }
@@ -320,7 +320,7 @@
             function fit(slide) {
                 var style = slide.style
                 var i = 1000
-                
+
                 style.display  = "inline";
                 style.fontSize = i + "px";
                 //Math.floor and division by 5 are to add margins to the text
@@ -520,6 +520,9 @@
                 right: 10px;
                 height: 100%;
                 text-align: center;
+            }
+            #github-link > a {
+                color: #BBBBBB;
             }
             .info-icon {
                 display: none;

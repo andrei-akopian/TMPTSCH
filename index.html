@@ -38,11 +38,11 @@
                 </button>
                 <div id="slide-count-display">No Slides Yet</div>
                 <div style="position: absolute">
-                    QR Codes: 
+                    QR Codes library:
                     <select name="qrcode-select" id="qrcode-select">
                         <option value="disabled">Disabled</option>
-                        <option value="CDN">Load via CDN</option>
-                        <option value="local">Load from Local</option>
+                        <option value="CDN">Load library via CDN</option>
+                        <option value="local">Load library from Local</option>
                     </select>
                 </div>
             </div>
@@ -197,7 +197,7 @@
             /*
             // Slide Creation
             */
-            function generateSlides(text){  
+            function generateSlides(text){
                 for (let content of text.split("\n\n")){
                     addSlide(content);
                 }
@@ -255,7 +255,7 @@
 
                             node.appendChild(document.createTextNode(line.substring(0,opening_braket)));
                             node.appendChild(generateLinkTag(link_title, link_url));
-                            
+
                             line = line.substring(closing_parenth+1);
                             i = line.indexOf("](");
                         }
@@ -320,7 +320,7 @@
             function fit(slide) {
                 var style = slide.style
                 var i = 1000
-                
+
                 style.display  = "inline";
                 style.fontSize = i + "px";
                 //Math.floor and division by 5 are to add margins to the text
@@ -520,6 +520,9 @@
                 right: 10px;
                 height: 100%;
                 text-align: center;
+            }
+            #github-link > a {
+                color: #BBBBBB;
             }
             .info-icon {
                 display: none;

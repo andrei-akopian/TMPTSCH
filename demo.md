@@ -6,7 +6,7 @@ Takahashi Method Presentation Tool Sent Clone HTML
 
 Yeah, my naming sense is bad.
 
-[Takahashi Method](https://en.wikipedia.org/wiki/TMPTSCH) Presentations
+[Takahashi Method](https://en.wikipedia.org/wiki/Takahashi_method) Presentations
 Have a phrase per slide.
 
 Now feature showcase!

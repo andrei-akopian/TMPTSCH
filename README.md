@@ -165,8 +165,9 @@ Orange: `#E2A619` and `#E29002` and `#C37515`
 Demo Design:
 - On a fresh browser profile (no extensions) import from demo.md
 - turn hide the header menu
-- after saving, change all urls and image links to what they are supposed to be.
-- turn off image source detection
+- after saving, change all urls and image links to what they are supposed to be
+- turn off image source detection and click event listener
+- check the differences between old and new demo files
 
 Favicon:
 - to keep it all a single file, a separate version of the favicon is inline
