@@ -37,7 +37,7 @@
                 </button>
                 <div id="slide-count-display">Slide: 1 of 23</div>
                 <div style="position: absolute">
-                    QR Codes library:
+                    QR Codes:
                     <select name="qrcode-select" id="qrcode-select">
                         <option value="disabled">Disabled</option>
                         <option value="CDN">Load library via CDN</option>
@@ -127,7 +127,7 @@
                 return "Your progress will be lost. You can save the presentation using Ctrl/Cmd+S";
             };
             async function loadQRCodeLib(source){
-                if (QR_code.loaded){
+                if (QR_code.loaded || source=='disabled'){
                     return;
                 };
                 if (source=='CDN'){
@@ -140,6 +140,7 @@
                     eval(code);
                     QR_code.QRCode = QRCode;
                     QR_code.loaded = true;
+                    reloadSlides();
                 } else if (source=="local") {
                     let filenames = ["qrcode.js","qrcode.min.js"];
                     loadLocalQRLib(filenames,0);
@@ -152,6 +153,7 @@
                 node.onload = () => {
                     QR_code.QRCode = QRCode;
                     QR_code.loaded = true;
+                    reloadSlides();
                 };
                 if (i<filenames.length-1) {
                     node.onerror = () => {
@@ -176,7 +178,6 @@
             });
             document.getElementById("qrcode-select").addEventListener("change", (e)=>{
                 loadQRCodeLib(document.getElementById("qrcode-select").value);
-                reloadSlides();
             });
             function exportToTXT(){
                 if (slide_total==0){
